@@ -111,7 +111,7 @@
             return Xor(left, right);
         }
 
-        public virtual async Task<bool> Includes(params long[] users)
+        public virtual async Task<bool[]> Includes(params long[] users)
         {
             Validation.ValidateUsers(users);
 
@@ -129,15 +129,13 @@
             }
         }
 
-        internal async Task<bool> InternalIncludes(
+        internal async Task<bool[]> InternalIncludes(
             RedisConnection connection,
             params long[] users)
         {
-            var includes = await Task.WhenAll(
+            var result = await Task.WhenAll(
                 users.Select(user =>
                     connection.Strings.GetBit(Db, Key, user)));
-
-            var result = includes.All(i => i);
 
             return result;
         }

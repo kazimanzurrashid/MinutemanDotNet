@@ -1,6 +1,7 @@
 ﻿namespace Minuteman.Tests
 {
     using System;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using Xunit;
@@ -35,7 +36,7 @@
             var result = await userActivity.Users(EventName, timestamp)
                 .Includes(98);
 
-            Assert.True(result);
+            Assert.True(result.First());
         }
 
         [Fact]
@@ -49,7 +50,7 @@
             var result = await userActivity.Users(EventName, timestamp)
                 .Includes(102);
 
-            Assert.False(result);
+            Assert.False(result.First());
         }
     }
 }

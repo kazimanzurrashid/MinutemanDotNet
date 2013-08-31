@@ -42,7 +42,7 @@
 
         protected string Operation { get; private set; }
 
-        public override async Task<bool> Includes(params long[] users)
+        public override async Task<bool[]> Includes(params long[] users)
         {
             Validation.ValidateUsers(users);
 

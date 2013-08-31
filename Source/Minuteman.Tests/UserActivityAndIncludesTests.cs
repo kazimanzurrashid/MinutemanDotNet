@@ -1,7 +1,6 @@
 ﻿namespace Minuteman.Tests
 {
     using System;
-    using System.Linq;
     using System.Threading.Tasks;
 
     using Xunit;
@@ -36,17 +35,9 @@
             var banana = userActivity.Users("bought-banana", timestamp);
             var both = apple & banana;
 
-            var results = await Task.WhenAll(
-                both.Includes(0),
-                both.Includes(1),
-                both.Includes(2),
-                both.Includes(3),
-                both.Includes(4),
-                both.Includes(5),
-                both.Includes(6),
-                both.Includes(7));
+            var results = await both.Includes(0, 1, 2, 3, 4, 5, 6, 7);
 
-            for (var i = 0; i < results.ToList().Count; i++)
+            for (var i = 0; i < results.Length; i++)
             {
                 if (i > 2 && i < 5)
                 {
