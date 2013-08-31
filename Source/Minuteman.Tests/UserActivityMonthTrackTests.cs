@@ -7,12 +7,12 @@
     public class UserActivityMonthTrackTests : UserActivityYearTrackTests
     {
         public UserActivityMonthTrackTests() :
-            this(ActivityDrilldownType.Month)
+            this(ActivityDrilldown.Month)
         {
         }
 
         protected UserActivityMonthTrackTests(
-            ActivityDrilldownType drilldown) : base(drilldown)
+            ActivityDrilldown drilldown) : base(drilldown)
         {
         }
 

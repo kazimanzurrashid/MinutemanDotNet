@@ -3,8 +3,8 @@
     public class ActivitySettings
     {
         private const int DefaultDb = 0;
-        private const ActivityDrilldownType DefaultDrilDown =
-            ActivityDrilldownType.Minute;
+        private const ActivityDrilldown DefaultDrilDown =
+            ActivityDrilldown.Minute;
 
         private const string DefaultKeyPrefix = "minuteman";
         private const string DefaultKeySeparator = ":";
@@ -20,7 +20,7 @@
 
         public ActivitySettings(
             int db,
-            ActivityDrilldownType drilldown)
+            ActivityDrilldown drilldown)
             : this(db, drilldown, DefaultKeyPrefix, DefaultKeySeparator)
         {
         }
@@ -34,7 +34,7 @@
         {
         }
 
-        public ActivitySettings(ActivityDrilldownType drilldown)
+        public ActivitySettings(ActivityDrilldown drilldown)
             : this(
             DefaultDb,
             drilldown,
@@ -45,7 +45,7 @@
 
         public ActivitySettings(
             int db,
-            ActivityDrilldownType drilldown,
+            ActivityDrilldown drilldown,
             string keyPrefix,
             string keySeparator)
         {
@@ -59,7 +59,7 @@
 
         public int Db { get; private set; }
 
-        public ActivityDrilldownType Drilldown { get; private set; }
+        public ActivityDrilldown Drilldown { get; private set; }
 
         public string KeyPrefix { get; private set; }
 

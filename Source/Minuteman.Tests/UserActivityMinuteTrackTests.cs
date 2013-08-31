@@ -7,7 +7,7 @@
     public class UserActivityMinuteTrackTests : UserActivityHourTrackTests
     {
         public UserActivityMinuteTrackTests()
-            : base(ActivityDrilldownType.Minute)
+            : base(ActivityDrilldown.Minute)
         {
         }
 

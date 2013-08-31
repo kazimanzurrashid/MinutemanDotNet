@@ -126,7 +126,7 @@
   <data name="Validation_ValidateEventName_Required" xml:space="preserve">
     <value>Event name is required.</value>
   </data>
-  <data name="UsersResult.Constructor_Required" xml:space="preserve">
+  <data name="UsersResult_Constructor_Required" xml:space="preserve">
     <value>Key is required.</value>
   </data>
   <data name="Validation_ValidateDb_Negative" xml:space="preserve">
@@ -143,8 +143,5 @@
   </data>
   <data name="CompositeUsersResult_PerformBitOperation_Unsupported" xml:space="preserve">
     <value>Operation "{0}" is not supported.</value>
-  </data>
-  <data name="NegatedUsersResult_Constructor_Required" xml:space="preserve">
-    <value>Other key is required.</value>
   </data>
 </root>

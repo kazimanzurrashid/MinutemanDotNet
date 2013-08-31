@@ -11,7 +11,7 @@
         protected static readonly DateTime Timestamp =
             new DateTime(2013, 8, 30, 10, 26, 00);
 
-        protected UserActivityTrackTests(ActivityDrilldownType drilldown)
+        protected UserActivityTrackTests(ActivityDrilldown drilldown)
         {
             UserActivity = new UserActivity(
                 new ActivitySettings(1, drilldown));

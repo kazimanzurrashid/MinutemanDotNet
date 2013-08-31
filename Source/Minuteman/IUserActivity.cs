@@ -10,13 +10,13 @@
 
         Task Track(
             string eventName,
-            ActivityDrilldownType drilldown,
+            ActivityDrilldown drilldown,
             DateTime timestamp,
             params long[] users);
 
         UsersResult Users(
             string eventName,
-            ActivityDrilldownType drilldown,
+            ActivityDrilldown drilldown,
             DateTime timestamp);
 
         Task<IEnumerable<string>> EventNames();

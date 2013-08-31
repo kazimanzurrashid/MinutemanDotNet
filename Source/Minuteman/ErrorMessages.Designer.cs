@@ -97,20 +97,11 @@ namespace Minuteman {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Other key is required..
-        /// </summary>
-        internal static string NegatedUsersResult_Constructor_Required {
-            get {
-                return ResourceManager.GetString("NegatedUsersResult_Constructor_Required", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Key is required..
         /// </summary>
         internal static string UsersResult_Constructor_Required {
             get {
-                return ResourceManager.GetString("UsersResult.Constructor_Required", resourceCulture);
+                return ResourceManager.GetString("UsersResult_Constructor_Required", resourceCulture);
             }
         }
         

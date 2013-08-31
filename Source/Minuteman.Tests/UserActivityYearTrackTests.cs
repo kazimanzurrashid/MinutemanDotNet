@@ -8,12 +8,12 @@
     public class UserActivityYearTrackTests : UserActivityTrackTests
     {
         public UserActivityYearTrackTests() :
-            this(ActivityDrilldownType.Year)
+            this(ActivityDrilldown.Year)
         {
         }
 
         protected UserActivityYearTrackTests(
-            ActivityDrilldownType drilldown) : base(drilldown)
+            ActivityDrilldown drilldown) : base(drilldown)
         {
         }
 

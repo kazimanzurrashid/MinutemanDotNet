@@ -47,7 +47,7 @@
 
         public virtual async Task Track(
             string eventName,
-            ActivityDrilldownType drilldown,
+            ActivityDrilldown drilldown,
             DateTime timestamp,
             params long[] users)
         {
@@ -86,7 +86,7 @@
 
         public virtual UsersResult Users(
             string eventName,
-            ActivityDrilldownType drilldown,
+            ActivityDrilldown drilldown,
             DateTime timestamp)
         {
             Validation.ValidateEventName(eventName);
@@ -167,7 +167,7 @@
 
         internal IEnumerable<string> GenerateEventTimeframeKeys(
             string eventName,
-            ActivityDrilldownType drilldown,
+            ActivityDrilldown drilldown,
             DateTime timestamp)
         {
             Func<string> formatYear = () => Format(timestamp.Year, "d4");
@@ -182,7 +182,7 @@
                 eventName,
                 formatYear());
 
-            if (drilldownType > (int)ActivityDrilldownType.Year)
+            if (drilldownType > (int)ActivityDrilldown.Year)
             {
                 yield return GenerateKey(
                     eventName, 
@@ -190,7 +190,7 @@
                     formatMonth());
             }
 
-            if (drilldownType > (int)ActivityDrilldownType.Month)
+            if (drilldownType > (int)ActivityDrilldown.Month)
             {
                 yield return GenerateKey(
                     eventName, 
@@ -199,7 +199,7 @@
                     formatDay());
             }
 
-            if (drilldownType > (int)ActivityDrilldownType.Day)
+            if (drilldownType > (int)ActivityDrilldown.Day)
             {
                 yield return GenerateKey(
                     eventName, 
@@ -209,7 +209,7 @@
                     formatHour());
             }
 
-            if (drilldownType > (int)ActivityDrilldownType.Hour)
+            if (drilldownType > (int)ActivityDrilldown.Hour)
             {
                 yield return GenerateKey(
                     eventName, 

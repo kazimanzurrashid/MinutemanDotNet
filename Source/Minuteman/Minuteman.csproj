@@ -52,7 +52,7 @@
       <DependentUpon>ErrorMessages.resx</DependentUpon>
     </Compile>
     <Compile Include="UserActivity.cs" />
-    <Compile Include="ActivityDrilldownType.cs" />
+    <Compile Include="ActivityDrilldown.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IUserActivity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
