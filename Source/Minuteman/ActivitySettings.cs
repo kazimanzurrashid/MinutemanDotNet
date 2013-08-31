@@ -1,15 +1,15 @@
 ﻿namespace Minuteman
 {
-    public class UserActivitySettings
+    public class ActivitySettings
     {
         private const int DefaultDb = 0;
-        private const UserActivityDrilldownType DefaultDrilDown =
-            UserActivityDrilldownType.Minute;
+        private const ActivityDrilldownType DefaultDrilDown =
+            ActivityDrilldownType.Minute;
 
         private const string DefaultKeyPrefix = "minuteman";
         private const string DefaultKeySeparator = ":";
  
-        public UserActivitySettings() : 
+        public ActivitySettings() : 
             this(
             DefaultDb,
             DefaultDrilDown,
@@ -18,14 +18,14 @@
         {
         }
 
-        public UserActivitySettings(
+        public ActivitySettings(
             int db,
-            UserActivityDrilldownType drilldown)
+            ActivityDrilldownType drilldown)
             : this(db, drilldown, DefaultKeyPrefix, DefaultKeySeparator)
         {
         }
 
-        public UserActivitySettings(int db)
+        public ActivitySettings(int db)
             : this(
             db,
             DefaultDrilDown,
@@ -34,7 +34,7 @@
         {
         }
 
-        public UserActivitySettings(UserActivityDrilldownType drilldown)
+        public ActivitySettings(ActivityDrilldownType drilldown)
             : this(
             DefaultDb,
             drilldown,
@@ -43,9 +43,9 @@
         {
         }
 
-        public UserActivitySettings(
+        public ActivitySettings(
             int db,
-            UserActivityDrilldownType drilldown,
+            ActivityDrilldownType drilldown,
             string keyPrefix,
             string keySeparator)
         {
@@ -59,7 +59,7 @@
 
         public int Db { get; private set; }
 
-        public UserActivityDrilldownType Drilldown { get; private set; }
+        public ActivityDrilldownType Drilldown { get; private set; }
 
         public string KeyPrefix { get; private set; }
 

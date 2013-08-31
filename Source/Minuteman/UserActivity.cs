@@ -14,12 +14,13 @@
 
         private static Func<RedisConnection> connectionFactory = () => 
             new RedisConnection("localhost");
- 
-        public UserActivity() : this(new UserActivitySettings())
+
+        public UserActivity()
+            : this(new ActivitySettings())
         {
         }
 
-        public UserActivity(UserActivitySettings settings)
+        public UserActivity(ActivitySettings settings)
         {
             if (settings == null)
             {
@@ -42,11 +43,11 @@
             }
         }
 
-        public UserActivitySettings Settings { get; private set; }
+        public ActivitySettings Settings { get; private set; }
 
         public virtual async Task Track(
             string eventName,
-            UserActivityDrilldownType drilldown,
+            ActivityDrilldownType drilldown,
             DateTime timestamp,
             params long[] users)
         {
@@ -85,7 +86,7 @@
 
         public virtual UsersResult Users(
             string eventName,
-            UserActivityDrilldownType drilldown,
+            ActivityDrilldownType drilldown,
             DateTime timestamp)
         {
             Validation.ValidateEventName(eventName);
@@ -166,7 +167,7 @@
 
         internal IEnumerable<string> GenerateEventTimeframeKeys(
             string eventName,
-            UserActivityDrilldownType drilldown,
+            ActivityDrilldownType drilldown,
             DateTime timestamp)
         {
             Func<string> formatYear = () => Format(timestamp.Year, "d4");
@@ -181,7 +182,7 @@
                 eventName,
                 formatYear());
 
-            if (drilldownType > (int)UserActivityDrilldownType.Year)
+            if (drilldownType > (int)ActivityDrilldownType.Year)
             {
                 yield return GenerateKey(
                     eventName, 
@@ -189,7 +190,7 @@
                     formatMonth());
             }
 
-            if (drilldownType > (int)UserActivityDrilldownType.Month)
+            if (drilldownType > (int)ActivityDrilldownType.Month)
             {
                 yield return GenerateKey(
                     eventName, 
@@ -198,7 +199,7 @@
                     formatDay());
             }
 
-            if (drilldownType > (int)UserActivityDrilldownType.Day)
+            if (drilldownType > (int)ActivityDrilldownType.Day)
             {
                 yield return GenerateKey(
                     eventName, 
@@ -208,7 +209,7 @@
                     formatHour());
             }
 
-            if (drilldownType > (int)UserActivityDrilldownType.Hour)
+            if (drilldownType > (int)ActivityDrilldownType.Hour)
             {
                 yield return GenerateKey(
                     eventName, 

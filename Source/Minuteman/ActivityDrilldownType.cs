@@ -1,6 +1,6 @@
 ﻿namespace Minuteman
 {
-    public enum UserActivityDrilldownType
+    public enum ActivityDrilldownType
     {
         Year,
         Month,

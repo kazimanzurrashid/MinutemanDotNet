@@ -11,10 +11,10 @@
         protected static readonly DateTime Timestamp =
             new DateTime(2013, 8, 30, 10, 26, 00);
 
-        protected UserActivityTrackTests(UserActivityDrilldownType drilldown)
+        protected UserActivityTrackTests(ActivityDrilldownType drilldown)
         {
             UserActivity = new UserActivity(
-                new UserActivitySettings(1, drilldown));
+                new ActivitySettings(1, drilldown));
             UserActivity.Reset().Wait();
             UserActivity.Track(EventName, Timestamp, 1, 2, 3).Wait();
         }

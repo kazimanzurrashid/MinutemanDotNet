@@ -7,12 +7,12 @@
     public class UserActivityDayTrackTests : UserActivityMonthTrackTests
     {
         public UserActivityDayTrackTests()
-            : this(UserActivityDrilldownType.Day)
+            : this(ActivityDrilldownType.Day)
         {
         }
 
         protected UserActivityDayTrackTests(
-            UserActivityDrilldownType drilldown) : base(drilldown)
+            ActivityDrilldownType drilldown) : base(drilldown)
         {
         }
 

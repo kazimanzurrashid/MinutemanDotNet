@@ -12,7 +12,7 @@
 
         public UserActivityEventNamesTests()
         {
-            userActivity = new UserActivity(new UserActivitySettings(1));
+            userActivity = new UserActivity(new ActivitySettings(1));
             userActivity.Reset().Wait();
         }
 

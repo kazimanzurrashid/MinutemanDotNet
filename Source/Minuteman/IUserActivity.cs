@@ -6,17 +6,17 @@
 
     public interface IUserActivity
     {
-        UserActivitySettings Settings { get; }
+        ActivitySettings Settings { get; }
 
         Task Track(
             string eventName,
-            UserActivityDrilldownType drilldown,
+            ActivityDrilldownType drilldown,
             DateTime timestamp,
             params long[] users);
 
         UsersResult Users(
             string eventName,
-            UserActivityDrilldownType drilldown,
+            ActivityDrilldownType drilldown,
             DateTime timestamp);
 
         Task<IEnumerable<string>> EventNames();

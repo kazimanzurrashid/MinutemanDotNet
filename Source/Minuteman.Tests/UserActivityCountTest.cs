@@ -13,7 +13,7 @@
         public UserActivityCountTest()
         {
             userActivity = new UserActivity(
-                new UserActivitySettings(1, UserActivityDrilldownType.Year));
+                new ActivitySettings(1, ActivityDrilldownType.Year));
             userActivity.Reset().Wait();
         }
 
