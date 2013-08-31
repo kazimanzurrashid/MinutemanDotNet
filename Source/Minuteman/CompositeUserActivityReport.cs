@@ -6,9 +6,9 @@
 
     using BookSleeve;
 
-    public class CompositeUsersResult : UsersResult
+    public class CompositeUserActivityReport : UserActivityReport
     {
-        public CompositeUsersResult(
+        public CompositeUserActivityReport(
             int db,
             string key,
             string operation,
@@ -18,17 +18,17 @@
         {
             Validation.ValidateString(
                 operation,
-                ErrorMessages.CompositeUsersResult_Constructor_Operation_Required,
+                ErrorMessages.CompositeUserActivityReport_Constructor_Operation_Required,
                 "operation");
 
             Validation.ValidateString(
                 leftKey,
-                ErrorMessages.CompositeUsersResult_Constructor_LeftKey_Required,
+                ErrorMessages.CompositeUserActivityReport_Constructor_LeftKey_Required,
                 "leftKey");
 
             Validation.ValidateString(
                 rightKey,
-                ErrorMessages.CompositeUsersResult_Constructor_RightKey_Required,
+                ErrorMessages.CompositeUserActivityReport_Constructor_RightKey_Required,
                 "rightKey");
 
             Operation = operation;
@@ -87,7 +87,7 @@
             throw new InvalidOperationException(
                 string.Format(
                     CultureInfo.CurrentUICulture,
-                    ErrorMessages.CompositeUsersResult_PerformBitOperation_Unsupported,
+                    ErrorMessages.CompositeUserActivityReport_PerformBitOperation_Unsupported,
                     Operation));
         }
     }

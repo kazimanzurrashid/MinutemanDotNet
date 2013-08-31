@@ -23,7 +23,7 @@
                 users);
         }
 
-        public static UsersResult Users(
+        public static UserActivityReport Report(
             this IUserActivity instance,
             string eventName,
             DateTime timestamp)
@@ -33,7 +33,7 @@
                 throw new ArgumentNullException("instance");
             }
 
-            return instance.Users(
+            return instance.Report(
                 eventName,
                 instance.Settings.Drilldown,
                 timestamp);

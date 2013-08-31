@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Globalization;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -85,7 +84,7 @@
             }
         }
 
-        public virtual UsersResult Users(
+        public virtual UserActivityReport Report(
             string eventName,
             ActivityDrilldown drilldown,
             DateTime timestamp)
@@ -95,7 +94,7 @@
             var eventKey = GenerateEventTimeframeKeys(eventName, drilldown, timestamp)
                 .ElementAt((int)drilldown);
 
-            return new UsersResult(Settings.Db, eventKey);
+            return new UserActivityReport(Settings.Db, eventKey);
         }
 
         public virtual async Task<IEnumerable<string>> EventNames()
@@ -171,60 +170,49 @@
             ActivityDrilldown drilldown,
             DateTime timestamp)
         {
-            Func<string> formatYear = () => Format(timestamp.Year, "d4");
-            Func<string> formatMonth = () => Format(timestamp.Month);
-            Func<string> formatDay = () => Format(timestamp.Day);
-            Func<string> formatHour = () => Format(timestamp.Hour);
-            Func<string> formatMinute = () => Format(timestamp.Minute);
-
-            var drilldownType = (int)drilldown;
+            var type = (int)drilldown;
 
             yield return GenerateKey(
                 eventName,
-                formatYear());
+                timestamp.FormatYear());
 
-            if (drilldownType > (int)ActivityDrilldown.Year)
+            if (type > (int)ActivityDrilldown.Year)
             {
                 yield return GenerateKey(
                     eventName, 
-                    formatYear(),
-                    formatMonth());
+                    timestamp.FormatYear(),
+                    timestamp.FormatMonth());
             }
 
-            if (drilldownType > (int)ActivityDrilldown.Month)
+            if (type > (int)ActivityDrilldown.Month)
             {
                 yield return GenerateKey(
                     eventName, 
-                    formatYear(),
-                    formatMonth(),
-                    formatDay());
+                    timestamp.FormatYear(),
+                    timestamp.FormatMonth(),
+                    timestamp.FormatDay());
             }
 
-            if (drilldownType > (int)ActivityDrilldown.Day)
+            if (type > (int)ActivityDrilldown.Day)
             {
                 yield return GenerateKey(
                     eventName, 
-                    formatYear(),
-                    formatMonth(),
-                    formatDay(),
-                    formatHour());
+                    timestamp.FormatYear(),
+                    timestamp.FormatMonth(),
+                    timestamp.FormatDay(),
+                    timestamp.FormatHour());
             }
 
-            if (drilldownType > (int)ActivityDrilldown.Hour)
+            if (type > (int)ActivityDrilldown.Hour)
             {
                 yield return GenerateKey(
-                    eventName, 
-                    formatYear(),
-                    formatMonth(),
-                    formatDay(),
-                    formatHour(),
-                    formatMinute());
+                    eventName,
+                    timestamp.FormatYear(),
+                    timestamp.FormatMonth(),
+                    timestamp.FormatDay(),
+                    timestamp.FormatHour(),
+                    timestamp.FormatMinute());
             }
-        }
-
-        private static string Format(int value, string format = "d2")
-        {
-            return value.ToString(format, CultureInfo.InvariantCulture);
         }
 
         private string RemoveKeyPrefix(string prefix, string value)

@@ -14,7 +14,7 @@
             DateTime timestamp,
             params long[] users);
 
-        UsersResult Users(
+        UserActivityReport Report(
             string eventName,
             ActivityDrilldown drilldown,
             DateTime timestamp);

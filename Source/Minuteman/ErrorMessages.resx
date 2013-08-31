@@ -126,22 +126,22 @@
   <data name="Validation_ValidateEventName_Required" xml:space="preserve">
     <value>Event name is required.</value>
   </data>
-  <data name="UsersResult_Constructor_Required" xml:space="preserve">
+  <data name="UserActivityReport_Constructor_Required" xml:space="preserve">
     <value>Key is required.</value>
   </data>
   <data name="Validation_ValidateDb_Negative" xml:space="preserve">
     <value>Db cannot be negative.</value>
   </data>
-  <data name="CompositeUsersResult_Constructor_LeftKey_Required" xml:space="preserve">
+  <data name="CompositeUserActivityReport_Constructor_LeftKey_Required" xml:space="preserve">
     <value>Left key is required.</value>
   </data>
-  <data name="CompositeUsersResult_Constructor_Operation_Required" xml:space="preserve">
+  <data name="CompositeUserActivityReport_Constructor_Operation_Required" xml:space="preserve">
     <value>Operation is required.</value>
   </data>
-  <data name="CompositeUsersResult_Constructor_RightKey_Required" xml:space="preserve">
+  <data name="CompositeUserActivityReport_Constructor_RightKey_Required" xml:space="preserve">
     <value>Right key is required.</value>
   </data>
-  <data name="CompositeUsersResult_PerformBitOperation_Unsupported" xml:space="preserve">
+  <data name="CompositeUserActivityReport_PerformBitOperation_Unsupported" xml:space="preserve">
     <value>Operation "{0}" is not supported.</value>
   </data>
 </root>

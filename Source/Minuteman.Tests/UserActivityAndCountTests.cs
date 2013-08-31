@@ -31,8 +31,8 @@
                 userActivity.Track("bought-apple", timestamp, 1, 2, 3, 4),
                 userActivity.Track("bought-banana", timestamp, 3, 4, 5, 6));
 
-            var apple = userActivity.Users("bought-apple", timestamp);
-            var banana = userActivity.Users("bought-banana", timestamp);
+            var apple = userActivity.Report("bought-apple", timestamp);
+            var banana = userActivity.Report("bought-banana", timestamp);
             var both = apple & banana;
             var count = await both.Count();
 

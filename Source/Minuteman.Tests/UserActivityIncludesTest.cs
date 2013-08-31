@@ -33,7 +33,7 @@
             await userActivity.Track(EventName, timestamp, 98);
             await userActivity.Track(EventName, timestamp, 99);
 
-            var result = await userActivity.Users(EventName, timestamp)
+            var result = await userActivity.Report(EventName, timestamp)
                 .Includes(98);
 
             Assert.True(result.First());
@@ -47,7 +47,7 @@
             await userActivity.Track(EventName, timestamp, 101);
             await userActivity.Track(EventName, timestamp, 103);
 
-            var result = await userActivity.Users(EventName, timestamp)
+            var result = await userActivity.Report(EventName, timestamp)
                 .Includes(102);
 
             Assert.False(result.First());

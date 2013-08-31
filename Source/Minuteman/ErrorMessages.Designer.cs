@@ -63,45 +63,45 @@ namespace Minuteman {
         /// <summary>
         ///   Looks up a localized string similar to Left key is required..
         /// </summary>
-        internal static string CompositeUsersResult_Constructor_LeftKey_Required {
+        internal static string CompositeUserActivityReport_Constructor_LeftKey_Required {
             get {
-                return ResourceManager.GetString("CompositeUsersResult_Constructor_LeftKey_Required", resourceCulture);
+                return ResourceManager.GetString("CompositeUserActivityReport_Constructor_LeftKey_Required", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Operation is required..
         /// </summary>
-        internal static string CompositeUsersResult_Constructor_Operation_Required {
+        internal static string CompositeUserActivityReport_Constructor_Operation_Required {
             get {
-                return ResourceManager.GetString("CompositeUsersResult_Constructor_Operation_Required", resourceCulture);
+                return ResourceManager.GetString("CompositeUserActivityReport_Constructor_Operation_Required", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Right key is required..
         /// </summary>
-        internal static string CompositeUsersResult_Constructor_RightKey_Required {
+        internal static string CompositeUserActivityReport_Constructor_RightKey_Required {
             get {
-                return ResourceManager.GetString("CompositeUsersResult_Constructor_RightKey_Required", resourceCulture);
+                return ResourceManager.GetString("CompositeUserActivityReport_Constructor_RightKey_Required", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Operation &quot;{0}&quot; is not supported..
         /// </summary>
-        internal static string CompositeUsersResult_PerformBitOperation_Unsupported {
+        internal static string CompositeUserActivityReport_PerformBitOperation_Unsupported {
             get {
-                return ResourceManager.GetString("CompositeUsersResult_PerformBitOperation_Unsupported", resourceCulture);
+                return ResourceManager.GetString("CompositeUserActivityReport_PerformBitOperation_Unsupported", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Key is required..
         /// </summary>
-        internal static string UsersResult_Constructor_Required {
+        internal static string UserActivityReport_Constructor_Required {
             get {
-                return ResourceManager.GetString("UsersResult_Constructor_Required", resourceCulture);
+                return ResourceManager.GetString("UserActivityReport_Constructor_Required", resourceCulture);
             }
         }
         

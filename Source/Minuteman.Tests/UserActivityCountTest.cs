@@ -24,7 +24,7 @@
 
             await userActivity.Track(EventName, timestamp, 100, 204, 1002, 3);
 
-            var count = await userActivity.Users(EventName, timestamp).Count();
+            var count = await userActivity.Report(EventName, timestamp).Count();
 
             Assert.Equal(4, count);
         }

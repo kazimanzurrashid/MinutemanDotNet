@@ -6,14 +6,14 @@
 
     using BookSleeve;
 
-    public class UsersResult
+    public class UserActivityReport
     {
-        public UsersResult(int db, string key)
+        public UserActivityReport(int db, string key)
         {
             Validation.ValidateDb(db);
             Validation.ValidateString(
                 key,
-                ErrorMessages.UsersResult_Constructor_Required,
+                ErrorMessages.UserActivityReport_Constructor_Required,
                 "key");
 
             Db = db;
@@ -24,7 +24,9 @@
 
         protected string Key { get; private set; }
 
-        public static UsersResult BitwiseAnd(UsersResult left, UsersResult right)
+        public static UserActivityReport BitwiseAnd(
+            UserActivityReport left,
+            UserActivityReport right)
         {
             if (left == null)
             {
@@ -38,7 +40,7 @@
 
             var key = left.Key + "&" + right.Key;
 
-            return new CompositeUsersResult(
+            return new CompositeUserActivityReport(
                 left.Db,
                 key,
                 "AND",
@@ -46,7 +48,9 @@
                 right.Key);
         }
 
-        public static UsersResult BitwiseOr(UsersResult left, UsersResult right)
+        public static UserActivityReport BitwiseOr(
+            UserActivityReport left,
+            UserActivityReport right)
         {
             if (left == null)
             {
@@ -60,7 +64,7 @@
 
             var key = left.Key + "|" + right.Key;
 
-            return new CompositeUsersResult(
+            return new CompositeUserActivityReport(
                 left.Db,
                 key,
                 "OR",
@@ -68,7 +72,9 @@
                 right.Key);
         }
 
-        public static UsersResult Xor(UsersResult left, UsersResult right)
+        public static UserActivityReport Xor(
+            UserActivityReport left,
+            UserActivityReport right)
         {
             if (left == null)
             {
@@ -82,7 +88,7 @@
 
             var key = left.Key + "^" + right.Key;
 
-            return new CompositeUsersResult(
+            return new CompositeUserActivityReport(
                 left.Db,
                 key,
                 "XOR",
@@ -90,23 +96,23 @@
                 right.Key);
         }
 
-        public static UsersResult operator &(
-            UsersResult left,
-            UsersResult right)
+        public static UserActivityReport operator &(
+            UserActivityReport left,
+            UserActivityReport right)
         {
             return BitwiseAnd(left, right);
         }
 
-        public static UsersResult operator |(
-            UsersResult left,
-            UsersResult right)
+        public static UserActivityReport operator |(
+            UserActivityReport left,
+            UserActivityReport right)
         {
             return BitwiseOr(left, right);
         }
 
-        public static UsersResult operator ^(
-            UsersResult left,
-            UsersResult right)
+        public static UserActivityReport operator ^(
+            UserActivityReport left,
+            UserActivityReport right)
         {
             return Xor(left, right);
         }
