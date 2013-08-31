@@ -60,6 +60,8 @@
     <Compile Include="UserActivityResetTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserActivityTrackTests.cs" />
+    <Compile Include="UserActivityXorCountTests.cs" />
+    <Compile Include="UserActivityXorIncludesTests.cs" />
     <Compile Include="UserActivityYearTrackTests.cs" />
   </ItemGroup>
   <ItemGroup>
