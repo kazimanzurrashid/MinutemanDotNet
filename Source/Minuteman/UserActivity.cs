@@ -10,7 +10,8 @@
 
     public class UserActivity : IUserActivity
     {
-        private const string EventsKeyName = "EVENTS";
+        private static readonly string EventsKeyName =
+            typeof(UserActivity).Name;
 
         private static Func<RedisConnection> connectionFactory = () => 
             new RedisConnection("localhost");
