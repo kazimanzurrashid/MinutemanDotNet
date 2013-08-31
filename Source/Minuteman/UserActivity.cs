@@ -44,46 +44,32 @@
 
         public UserActivitySettings Settings { get; private set; }
 
-        public virtual async Task Track(
+        public virtual Task Track(
             string eventName,
+            UserActivityDrilldownType drilldown,
             DateTime timestamp,
             params long[] users)
         {
-            Validation.ValidateEventName(eventName);
-            Validation.ValidateUsers(users);
-
-            var timeframeKeys = GenerateEventTimeframeKeys(
+            return TrackOrUntrack(
+                true,
                 eventName,
-                timestamp).ToList();
-
-            var eventsKey = GenerateKey(EventsKeyName);
-
-            using (var connection = await OpenConnection())
-            {
-                var tasks = new List<Task>();
-
-                foreach (var timeframeKey in timeframeKeys)
-                {
-                    tasks.AddRange(users.Select(user => 
-                        connection.Strings.SetBit(
-                            Settings.Db,
-                            timeframeKey,
-                            user,
-                            true)));
-                }
-
-                tasks.Add(connection.Sets.Add(
-                    Settings.Db,
-                    eventsKey,
-                    eventName));
-
-                await Task.WhenAll(tasks);
-            }
+                drilldown,
+                timestamp,
+                users);
         }
 
-        public virtual UsersResult Users(string eventName, DateTime timestamp)
+        public virtual Task Untrack(
+            string eventName,
+            UserActivityDrilldownType drilldown,
+            DateTime timestamp,
+            params long[] users)
         {
-            return Users(eventName, Settings.Drilldown, timestamp);
+            return TrackOrUntrack(
+                false,
+                eventName,
+                drilldown,
+                timestamp,
+                users);
         }
 
         public virtual UsersResult Users(string eventName,
@@ -92,7 +78,7 @@
         {
             Validation.ValidateEventName(eventName);
 
-            var eventKey = GenerateEventTimeframeKeys(eventName, timestamp)
+            var eventKey = GenerateEventTimeframeKeys(eventName, drilldown, timestamp)
                 .ElementAt((int)drilldown);
 
             return new UsersResult(Settings.Db, eventKey);
@@ -168,6 +154,7 @@
 
         internal IEnumerable<string> GenerateEventTimeframeKeys(
             string eventName,
+            UserActivityDrilldownType drilldown,
             DateTime timestamp)
         {
             Func<string> formatYear = () => Format(timestamp.Year, "d4");
@@ -176,13 +163,13 @@
             Func<string> formatHour = () => Format(timestamp.Hour);
             Func<string> formatMinute = () => Format(timestamp.Minute);
 
-            var drilldown = (int)Settings.Drilldown;
+            var drilldownType = (int)drilldown;
 
             yield return GenerateKey(
                 eventName,
                 formatYear());
 
-            if (drilldown > (int)UserActivityDrilldownType.Year)
+            if (drilldownType > (int)UserActivityDrilldownType.Year)
             {
                 yield return GenerateKey(
                     eventName, 
@@ -190,7 +177,7 @@
                     formatMonth());
             }
 
-            if (drilldown > (int)UserActivityDrilldownType.Month)
+            if (drilldownType > (int)UserActivityDrilldownType.Month)
             {
                 yield return GenerateKey(
                     eventName, 
@@ -199,7 +186,7 @@
                     formatDay());
             }
 
-            if (drilldown > (int)UserActivityDrilldownType.Day)
+            if (drilldownType > (int)UserActivityDrilldownType.Day)
             {
                 yield return GenerateKey(
                     eventName, 
@@ -209,7 +196,7 @@
                     formatHour());
             }
 
-            if (drilldown > (int)UserActivityDrilldownType.Hour)
+            if (drilldownType > (int)UserActivityDrilldownType.Hour)
             {
                 yield return GenerateKey(
                     eventName, 
@@ -224,6 +211,46 @@
         private static string Format(int value, string format = "d2")
         {
             return value.ToString(format, CultureInfo.InvariantCulture);
+        }
+
+        private async Task TrackOrUntrack(
+            bool track,
+            string eventName,
+            UserActivityDrilldownType drilldown,
+            DateTime timestamp,
+            params long[] users)
+        {
+            Validation.ValidateEventName(eventName);
+            Validation.ValidateUsers(users);
+
+            var timeframeKeys = GenerateEventTimeframeKeys(
+                eventName,
+                drilldown,
+                timestamp).ToList();
+
+            var eventsKey = GenerateKey(EventsKeyName);
+
+            using (var connection = await OpenConnection())
+            {
+                var tasks = new List<Task>();
+
+                foreach (var timeframeKey in timeframeKeys)
+                {
+                    tasks.AddRange(users.Select(user =>
+                        connection.Strings.SetBit(
+                            Settings.Db,
+                            timeframeKey,
+                            user,
+                            track)));
+                }
+
+                tasks.Add(connection.Sets.Add(
+                    Settings.Db,
+                    eventsKey,
+                    eventName));
+
+                await Task.WhenAll(tasks);
+            }
         }
 
         private string RemoveKeyPrefix(string prefix, string value)

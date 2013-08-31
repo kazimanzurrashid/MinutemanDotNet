@@ -27,6 +27,7 @@
         {
             var key = UserActivity.GenerateEventTimeframeKeys(
                 EventName,
+                UserActivity.Settings.Drilldown,
                 Timestamp)
                 .ElementAt((int)UserActivity.Settings.Drilldown);
 

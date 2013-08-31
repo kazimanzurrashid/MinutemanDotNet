@@ -51,11 +51,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ErrorMessages.resx</DependentUpon>
     </Compile>
+    <Compile Include="NegatedUsersResult.cs" />
     <Compile Include="UserActivity.cs" />
     <Compile Include="UserActivityDrilldownType.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IUserActivity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserActivityExtensions.cs" />
     <Compile Include="UserActivitySettings.cs" />
     <Compile Include="UsersResult.cs" />
     <Compile Include="Validation.cs" />

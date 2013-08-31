@@ -144,4 +144,7 @@
   <data name="CompositeUsersResult_PerformBitOperation_Unsupported" xml:space="preserve">
     <value>Operation "{0}" is not supported.</value>
   </data>
+  <data name="NegatedUsersResult_Constructor_Required" xml:space="preserve">
+    <value>Other key is required.</value>
+  </data>
 </root>
