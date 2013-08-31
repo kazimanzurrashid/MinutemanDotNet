@@ -83,10 +83,17 @@
 
         public virtual UsersResult Users(string eventName, DateTime timestamp)
         {
+            return Users(eventName, Settings.Drilldown, timestamp);
+        }
+
+        public virtual UsersResult Users(string eventName,
+            UserActivityDrilldownType drilldown,
+            DateTime timestamp)
+        {
             Validation.ValidateEventName(eventName);
 
             var eventKey = GenerateEventTimeframeKeys(eventName, timestamp)
-                .ElementAt((int)Settings.Drilldown);
+                .ElementAt((int)drilldown);
 
             return new UsersResult(Settings.Db, eventKey);
         }
