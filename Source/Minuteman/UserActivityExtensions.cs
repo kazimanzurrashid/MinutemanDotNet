@@ -23,24 +23,6 @@
                 users);
         }
 
-        public static Task Untrack(
-            this IUserActivity instance,
-            string eventName,
-            DateTime timestamp,
-            params long[] users)
-        {
-            if (instance == null)
-            {
-                throw new ArgumentNullException("instance");
-            }
-
-            return instance.Untrack(
-                eventName,
-                instance.Settings.Drilldown,
-                timestamp,
-                users);
-        }
-
         public static UsersResult Users(
             this IUserActivity instance,
             string eventName,

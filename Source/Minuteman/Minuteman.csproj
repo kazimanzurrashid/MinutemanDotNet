@@ -51,7 +51,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ErrorMessages.resx</DependentUpon>
     </Compile>
-    <Compile Include="NegatedUsersResult.cs" />
     <Compile Include="UserActivity.cs" />
     <Compile Include="UserActivityDrilldownType.cs" />
     <Compile Include="GlobalSuppressions.cs" />

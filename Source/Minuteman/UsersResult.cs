@@ -90,18 +90,6 @@
                 right.Key);
         }
 
-        public static UsersResult LogicalNot(UsersResult result)
-        {
-            if (result == null)
-            {
-                throw new ArgumentNullException("result");
-            }
-
-            var key = result + "!";
-
-            return new NegatedUsersResult(result.Db, key, result.Key);
-        }
-
         public static UsersResult operator &(
             UsersResult left,
             UsersResult right)
@@ -123,11 +111,6 @@
             return Xor(left, right);
         }
 
-        public static UsersResult operator !(UsersResult result)
-        {
-            return LogicalNot(result);
-        }
-
         public virtual async Task<bool[]> Includes(params long[] users)
         {
             Validation.ValidateUsers(users);
@@ -144,6 +127,18 @@
             {
                 return await InternalCount(connection);
             }
+        }
+
+        public virtual async Task<bool> Remove()
+        {
+            bool result;
+
+            using (var connection = await UserActivity.OpenConnection())
+            {
+                result = await connection.Keys.Remove(Db, Key);
+            }
+
+            return result;
         }
 
         internal async Task<bool[]> InternalIncludes(

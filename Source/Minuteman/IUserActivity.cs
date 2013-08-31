@@ -14,12 +14,6 @@
             DateTime timestamp,
             params long[] users);
 
-        Task Untrack(
-            string eventName,
-            UserActivityDrilldownType drilldown,
-            DateTime timestamp,
-            params long[] users);
-
         UsersResult Users(
             string eventName,
             UserActivityDrilldownType drilldown,

@@ -44,35 +44,47 @@
 
         public UserActivitySettings Settings { get; private set; }
 
-        public virtual Task Track(
+        public virtual async Task Track(
             string eventName,
             UserActivityDrilldownType drilldown,
             DateTime timestamp,
             params long[] users)
         {
-            return TrackOrUntrack(
-                true,
+            Validation.ValidateEventName(eventName);
+            Validation.ValidateUsers(users);
+
+            var timeframeKeys = GenerateEventTimeframeKeys(
                 eventName,
                 drilldown,
-                timestamp,
-                users);
+                timestamp).ToList();
+
+            var eventsKey = GenerateKey(EventsKeyName);
+
+            using (var connection = await OpenConnection())
+            {
+                var tasks = new List<Task>();
+
+                foreach (var timeframeKey in timeframeKeys)
+                {
+                    tasks.AddRange(users.Select(user =>
+                        connection.Strings.SetBit(
+                            Settings.Db,
+                            timeframeKey,
+                            user,
+                            true)));
+                }
+
+                tasks.Add(connection.Sets.Add(
+                    Settings.Db,
+                    eventsKey,
+                    eventName));
+
+                await Task.WhenAll(tasks);
+            }
         }
 
-        public virtual Task Untrack(
+        public virtual UsersResult Users(
             string eventName,
-            UserActivityDrilldownType drilldown,
-            DateTime timestamp,
-            params long[] users)
-        {
-            return TrackOrUntrack(
-                false,
-                eventName,
-                drilldown,
-                timestamp,
-                users);
-        }
-
-        public virtual UsersResult Users(string eventName,
             UserActivityDrilldownType drilldown,
             DateTime timestamp)
         {
@@ -211,46 +223,6 @@
         private static string Format(int value, string format = "d2")
         {
             return value.ToString(format, CultureInfo.InvariantCulture);
-        }
-
-        private async Task TrackOrUntrack(
-            bool track,
-            string eventName,
-            UserActivityDrilldownType drilldown,
-            DateTime timestamp,
-            params long[] users)
-        {
-            Validation.ValidateEventName(eventName);
-            Validation.ValidateUsers(users);
-
-            var timeframeKeys = GenerateEventTimeframeKeys(
-                eventName,
-                drilldown,
-                timestamp).ToList();
-
-            var eventsKey = GenerateKey(EventsKeyName);
-
-            using (var connection = await OpenConnection())
-            {
-                var tasks = new List<Task>();
-
-                foreach (var timeframeKey in timeframeKeys)
-                {
-                    tasks.AddRange(users.Select(user =>
-                        connection.Strings.SetBit(
-                            Settings.Db,
-                            timeframeKey,
-                            user,
-                            track)));
-                }
-
-                tasks.Add(connection.Sets.Add(
-                    Settings.Db,
-                    eventsKey,
-                    eventName));
-
-                await Task.WhenAll(tasks);
-            }
         }
 
         private string RemoveKeyPrefix(string prefix, string value)
