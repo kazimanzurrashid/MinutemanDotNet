@@ -36,17 +36,17 @@
             RightKey = rightKey;
         }
 
+        protected string Operation { get; private set; }
+
         protected string LeftKey { get; private set; }
 
         protected string RightKey { get; private set; }
-
-        protected string Operation { get; private set; }
 
         public override async Task<bool[]> Includes(params long[] users)
         {
             Validation.ValidateUsers(users);
 
-            using (var connection = await UserActivity.OpenConnection())
+            using (var connection = await ConnectionFactory.Open())
             {
                 await PerformBitOperation(connection);
 
@@ -56,7 +56,7 @@
 
         public override async Task<long> Count()
         {
-            using (var connection = await UserActivity.OpenConnection())
+            using (var connection = await ConnectionFactory.Open())
             {
                 await PerformBitOperation(connection);
 

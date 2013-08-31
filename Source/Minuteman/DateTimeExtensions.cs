@@ -30,6 +30,11 @@
             return Format(instance.Minute);
         }
 
+        public static string FormatSecond(this DateTime instance)
+        {
+            return Format(instance.Second);
+        }
+
         private static string Format(int value, string format = "d2")
         {
             return value.ToString(format, CultureInfo.InvariantCulture);

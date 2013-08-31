@@ -121,7 +121,7 @@
         {
             Validation.ValidateUsers(users);
 
-            using (var connection = await UserActivity.OpenConnection())
+            using (var connection = await ConnectionFactory.Open())
             {
                 return await InternalIncludes(connection, users);
             }
@@ -129,7 +129,7 @@
 
         public virtual async Task<long> Count()
         {
-            using (var connection = await UserActivity.OpenConnection())
+            using (var connection = await ConnectionFactory.Open())
             {
                 return await InternalCount(connection);
             }
@@ -139,7 +139,7 @@
         {
             bool result;
 
-            using (var connection = await UserActivity.OpenConnection())
+            using (var connection = await ConnectionFactory.Open())
             {
                 result = await connection.Keys.Remove(Db, Key);
             }

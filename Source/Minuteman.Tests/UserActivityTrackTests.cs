@@ -1,6 +1,7 @@
 ﻿namespace Minuteman.Tests
 {
     using System;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using Xunit;
@@ -32,6 +33,24 @@
         public void Dispose()
         {
             UserActivity.Reset().Wait();
+        }
+
+        protected async Task TestExists(ActivityDrilldown drilldown)
+        {
+            var key = UserActivity.GenerateEventTimeframeKeys(
+                EventName,
+                drilldown,
+                Timestamp)
+                .ElementAt((int)drilldown);
+
+            using (var connection = await ConnectionFactory.Open())
+            {
+                var result = await connection.Strings.Get(
+                    UserActivity.Settings.Db,
+                    key);
+
+                Assert.NotNull(result);
+            }
         }
     }
 }

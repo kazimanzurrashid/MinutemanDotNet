@@ -19,7 +19,7 @@
         [Fact]
         public async Task CreatesMonthEntry()
         {
-            await TestExists();
+            await TestExists(ActivityDrilldown.Month);
         }
     }
 }

@@ -1,13 +1,10 @@
 ﻿namespace Minuteman
 {
     using System;
-    using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    public interface IUserActivity
+    public interface IUserActivity : IActivity
     {
-        ActivitySettings Settings { get; }
-
         Task Track(
             string eventName,
             ActivityDrilldown drilldown,
@@ -18,9 +15,5 @@
             string eventName,
             ActivityDrilldown drilldown,
             DateTime timestamp);
-
-        Task<IEnumerable<string>> EventNames();
-
-        Task<long> Reset();
     }
 }

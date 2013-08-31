@@ -19,7 +19,7 @@
         [Fact]
         public async Task CreatesDayEntry()
         {
-            await TestExists();
+            await TestExists(ActivityDrilldown.Day);
         }
     }
 }

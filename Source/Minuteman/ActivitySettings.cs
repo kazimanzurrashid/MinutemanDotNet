@@ -4,7 +4,7 @@
     {
         private const int DefaultDb = 0;
         private const ActivityDrilldown DefaultDrilDown =
-            ActivityDrilldown.Minute;
+            ActivityDrilldown.Hour;
 
         private const string DefaultKeyPrefix = "minuteman";
         private const string DefaultKeySeparator = ":";

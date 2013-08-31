@@ -19,7 +19,7 @@
         [Fact]
         public async Task CreatesHourEntry()
         {
-            await TestExists();
+            await TestExists(ActivityDrilldown.Hour);
         }
     }
 }

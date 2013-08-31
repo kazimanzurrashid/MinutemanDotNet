@@ -23,7 +23,7 @@
         [Fact]
         public async Task RemovesEverythingsThatStartsWithKeyPrefix()
         {
-            using (var connection = await UserActivity.OpenConnection())
+            using (var connection = await ConnectionFactory.Open())
             {
                 await connection.Sets.Add(
                     userActivity.Settings.Db,

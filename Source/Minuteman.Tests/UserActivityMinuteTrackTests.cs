@@ -7,14 +7,19 @@
     public class UserActivityMinuteTrackTests : UserActivityHourTrackTests
     {
         public UserActivityMinuteTrackTests()
-            : base(ActivityDrilldown.Minute)
+            : this(ActivityDrilldown.Minute)
+        {
+        }
+
+        protected UserActivityMinuteTrackTests(
+            ActivityDrilldown drilldown) : base(drilldown)
         {
         }
 
         [Fact]
         public async Task CreatesMinuteEntry()
         {
-            await TestExists();
+            await TestExists(ActivityDrilldown.Minute);
         }
     }
 }
