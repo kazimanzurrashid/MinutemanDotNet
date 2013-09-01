@@ -10,8 +10,7 @@
         private static readonly string EventsKeyName =
             typeof(EventActivity).Name;
 
-        public EventActivity()
-            : this(new ActivitySettings())
+        public EventActivity() : this(new ActivitySettings())
         {
         }
 
@@ -48,6 +47,39 @@
 
                 await Task.WhenAll(tasks);
             }
+        }
+
+        public virtual async Task<long[]> Counts(
+            string eventName,
+            DateTime startTimestamp,
+            DateTime endTimestamp,
+            ActivityDrilldown drilldown)
+        {
+            Validation.ValidateEventName(eventName);
+
+            var dates = startTimestamp.Range(endTimestamp, drilldown);
+            var key = GenerateKey(eventName, drilldown.ToString());
+
+            var fields = dates.Select(d =>
+                    GenerateTimeframeFields(drilldown, d)
+                        .ElementAt((int)drilldown))
+                .ToArray();
+
+            string[] values;
+
+            using (var connection = await ConnectionFactory.Open())
+            {
+                values = await connection.Hashes.GetString(
+                    Settings.Db,
+                    key,
+                    fields);
+            }
+
+            var result = values.Select(v =>
+                    string.IsNullOrWhiteSpace(v) ? 0L : long.Parse(v))
+                .ToArray();
+
+            return result;
         }
 
         internal static IEnumerable<string> GenerateTimeframeFields(

@@ -27,5 +27,23 @@
                 instance.Settings.Drilldown,
                 timestamp);
         }
+
+        public static Task<long[]> Counts(
+            this IEventActivity instance,
+            string eventName,
+            DateTime startTimestamp,
+            DateTime endTimestamp)
+        {
+            if (instance == null)
+            {
+                throw new ArgumentNullException("instance");
+            }
+
+            return instance.Counts(
+                eventName,
+                startTimestamp,
+                endTimestamp,
+                instance.Settings.Drilldown);
+        }
     }
 }

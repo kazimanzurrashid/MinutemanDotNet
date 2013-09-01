@@ -9,5 +9,11 @@
             string eventName,
             ActivityDrilldown drilldown,
             DateTime timestamp);
+
+        Task<long[]> Counts(
+            string eventName,
+            DateTime startTimestamp,
+            DateTime endTimestamp,
+            ActivityDrilldown drilldown);
     }
 }

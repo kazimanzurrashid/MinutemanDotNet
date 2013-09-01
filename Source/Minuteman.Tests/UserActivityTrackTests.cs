@@ -9,8 +9,7 @@
     public abstract class UserActivityTrackTests : IDisposable
     {
         protected const string EventName = "my-event";
-        protected static readonly DateTime Timestamp =
-            new DateTime(2013, 8, 30, 10, 26, 00);
+        protected static readonly DateTime Timestamp = DateTime.UtcNow;
 
         protected UserActivityTrackTests(ActivityDrilldown drilldown)
         {

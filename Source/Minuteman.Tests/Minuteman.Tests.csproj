@@ -46,10 +46,14 @@
     <Compile Include="..\SharedFiles\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="DateTimeRangeTests.cs" />
+    <Compile Include="EventActivityCountsTests.cs" />
     <Compile Include="EventActivityDayTrackTests.cs" />
+    <Compile Include="EventActivityEventNamesTests.cs" />
     <Compile Include="EventActivityHourTrackTests.cs" />
     <Compile Include="EventActivityMinuteTrackTests.cs" />
     <Compile Include="EventActivityMonthTrackTests.cs" />
+    <Compile Include="EventActivityResetTests.cs" />
     <Compile Include="EventActivitySecondTrackTests.cs" />
     <Compile Include="EventActivityTrackTests.cs" />
     <Compile Include="EventActivityYearTrackTests.cs" />

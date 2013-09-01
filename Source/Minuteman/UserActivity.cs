@@ -10,8 +10,7 @@
         private static readonly string EventsKeyName =
             typeof(UserActivity).Name;
 
-        public UserActivity()
-            : this(new ActivitySettings())
+        public UserActivity() : this(new ActivitySettings())
         {
         }
 
