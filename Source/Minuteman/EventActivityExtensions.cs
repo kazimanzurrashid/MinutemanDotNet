@@ -7,6 +7,13 @@
     {
         public static Task Track(
             this IEventActivity instance,
+            string eventName)
+        {
+            return Track(instance, eventName, DateTime.UtcNow);
+        }
+
+        public static Task Track(
+            this IEventActivity instance,
             string eventName,
             DateTime timestamp)
         {

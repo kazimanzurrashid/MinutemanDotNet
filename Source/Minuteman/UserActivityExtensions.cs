@@ -8,6 +8,14 @@
         public static Task Track(
             this IUserActivity instance,
             string eventName,
+            params long[] users)
+        {
+            return Track(instance, eventName, DateTime.UtcNow, users);
+        }
+
+        public static Task Track(
+            this IUserActivity instance,
+            string eventName,
             DateTime timestamp,
             params long[] users)
         {
@@ -21,6 +29,13 @@
                 instance.Settings.Drilldown,
                 timestamp,
                 users);
+        }
+
+        public static UserActivityReport Report(
+            this IUserActivity instance,
+            string eventName)
+        {
+            return Report(instance, eventName, DateTime.UtcNow);
         }
 
         public static UserActivityReport Report(
