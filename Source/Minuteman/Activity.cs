@@ -58,13 +58,18 @@
 
         protected internal string GenerateKey(params string[] parts)
         {
-            var key = Settings.KeyPrefix +
-                Settings.KeySeparator +
-                Prefix +
+            var prefix = Settings.KeyPrefix + Settings.KeySeparator + Prefix;
+
+            if (!parts.Any())
+            {
+                return prefix;
+            }
+
+            var key = prefix +
                 Settings.KeySeparator +
                 string.Join(
                     Settings.KeySeparator,
-                    parts.Select(p => p.ToUpperInvariant()));
+                    parts.Select(part => part.ToUpperInvariant()));
 
             return key;
         }

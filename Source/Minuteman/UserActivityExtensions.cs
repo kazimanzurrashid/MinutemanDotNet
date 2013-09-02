@@ -10,13 +10,32 @@
             string eventName,
             params long[] users)
         {
-            return Track(instance, eventName, DateTime.UtcNow, users);
+            return Track(instance, eventName, false, users);
+        }
+
+        public static Task Track(
+            this IUserActivity instance,
+            string eventName,
+            bool publishable,
+            params long[] users)
+        {
+            return Track(instance, eventName, DateTime.UtcNow, publishable, users);
         }
 
         public static Task Track(
             this IUserActivity instance,
             string eventName,
             DateTime timestamp,
+            params long[] users)
+        {
+            return Track(instance, eventName, timestamp, false, users);
+        }
+
+        public static Task Track(
+            this IUserActivity instance,
+            string eventName,
+            DateTime timestamp,
+            bool publishable,
             params long[] users)
         {
             if (instance == null)
@@ -28,6 +47,7 @@
                 eventName,
                 instance.Settings.Drilldown,
                 timestamp,
+                publishable,
                 users);
         }
 

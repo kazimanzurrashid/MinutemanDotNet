@@ -9,11 +9,16 @@
             string eventName,
             ActivityDrilldown drilldown,
             DateTime timestamp,
+            bool publishable,
             params long[] users);
 
         UserActivityReport Report(
             string eventName,
             ActivityDrilldown drilldown,
             DateTime timestamp);
+
+        IUserActivitySubscription CreateSubscription(
+            string eventName,
+            Action<UserActivitySubscriptionInfo> action);
     }
 }

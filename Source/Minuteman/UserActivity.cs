@@ -27,6 +27,7 @@
             string eventName,
             ActivityDrilldown drilldown,
             DateTime timestamp,
+            bool publishable,
             params long[] users)
         {
             Validation.ValidateEventName(eventName);
@@ -38,8 +39,26 @@
                 timestamp).ToList();
 
             var eventsKey = GenerateKey();
+
             var db = Settings.Db;
             var tasks = new List<Task>();
+
+            string channel = null;
+            byte[] payload = null;
+
+            if (publishable)
+            {
+                channel = eventsKey +
+                    Settings.KeySeparator +
+                    eventName.ToUpperInvariant();
+
+                payload = new UserActivitySubscriptionInfo
+                {
+                    EventName = eventName,
+                    Timestamp = timestamp,
+                    Users = users
+                }.Serialize();
+            }
 
             using (var connection = await ConnectionFactory.Open())
             {
@@ -54,6 +73,11 @@
                 }
 
                 tasks.Add(connection.Sets.Add(db, eventsKey, eventName));
+
+                if (publishable)
+                {
+                    tasks.Add(connection.Publish(channel, payload));
+                }
 
                 await Task.WhenAll(tasks);
             }
@@ -70,6 +94,24 @@
                 eventName, drilldown, timestamp).ElementAt((int)drilldown);
 
             return new UserActivityReport(Settings.Db, eventKey);
+        }
+
+        public virtual IUserActivitySubscription CreateSubscription(
+            string eventName,
+            Action<UserActivitySubscriptionInfo> action)
+        {
+            Validation.ValidateEventName(eventName);
+
+            var channel = GenerateKey() + 
+                Settings.KeySeparator +
+                eventName.ToUpperInvariant();
+
+            var subscription = new UserActivitySubscription(
+                ConnectionFactory.SubscriberFactory(),
+                channel,
+                action);
+
+            return subscription;
         }
 
         internal IEnumerable<string> GenerateEventTimeframeKeys(

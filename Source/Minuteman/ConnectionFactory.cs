@@ -8,13 +8,23 @@
     public static class ConnectionFactory
     {
         private static Func<RedisConnection> factory = () =>
-            new RedisConnection("localhost"); 
+            new RedisConnection("localhost");
+
+        private static Func<RedisSubscriberConnection> subscriberFactory = () =>
+            new RedisSubscriberConnection("localhost");
 
         public static Func<RedisConnection> Factory
         {
             get { return factory; }
 
             set { factory = value; }
+        }
+
+        public static Func<RedisSubscriberConnection> SubscriberFactory
+        {
+            get { return subscriberFactory; }
+
+            set { subscriberFactory = value; }
         }
 
         internal static async Task<RedisConnection> Open()

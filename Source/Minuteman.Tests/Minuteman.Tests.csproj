@@ -68,6 +68,7 @@
     <Compile Include="UserActivityIncludesTest.cs" />
     <Compile Include="UserActivityMinuteTrackTests.cs" />
     <Compile Include="UserActivityMonthTrackTests.cs" />
+    <Compile Include="UserActivityPubSubTests.cs" />
     <Compile Include="UserActivityResetTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserActivitySecondTrackTests.cs" />

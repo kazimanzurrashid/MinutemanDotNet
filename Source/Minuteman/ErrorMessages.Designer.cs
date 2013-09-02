@@ -106,6 +106,15 @@ namespace Minuteman {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Channel is required..
+        /// </summary>
+        internal static string UserActivitySubscription_Constructor_Channel_Required {
+            get {
+                return ResourceManager.GetString("UserActivitySubscription_Constructor_Channel_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Db cannot be negative..
         /// </summary>
         internal static string Validation_ValidateDb_Negative {

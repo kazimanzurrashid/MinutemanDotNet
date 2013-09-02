@@ -38,6 +38,9 @@
     <Reference Include="BookSleeve">
       <HintPath>..\packages\BookSleeve.1.3.38\lib\BookSleeve.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.5.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
@@ -56,16 +59,19 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ErrorMessages.resx</DependentUpon>
     </Compile>
-    <Compile Include="EventActivity.cs"/>
+    <Compile Include="EventActivity.cs" />
     <Compile Include="EventActivityExtensions.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IActivity.cs" />
     <Compile Include="IEventActivity.cs" />
     <Compile Include="IUserActivity.cs" />
+    <Compile Include="IUserActivitySubscription.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserActivity.cs" />
     <Compile Include="UserActivityExtensions.cs" />
     <Compile Include="UserActivityReport.cs" />
+    <Compile Include="UserActivitySubscription.cs" />
+    <Compile Include="UserActivitySubscriptionInfo.cs" />
     <Compile Include="Validation.cs" />
   </ItemGroup>
   <ItemGroup>
