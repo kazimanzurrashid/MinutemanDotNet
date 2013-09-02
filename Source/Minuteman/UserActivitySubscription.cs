@@ -50,7 +50,7 @@
             GC.SuppressFinalize(this);
         }
 
-        public async Task Subscribe()
+        public virtual async Task Subscribe()
         {
             if (connection.State == RedisConnectionBase.ConnectionState.New)
             {
@@ -63,16 +63,21 @@
                     action(UserActivitySubscriptionInfo.Deserialize(data)));
         }
 
-        public Task Unsubscribe()
+        public virtual Task Unsubscribe()
         {
             return connection.Unsubscribe(channel);
+        }
+
+        protected virtual void DisposeCore()
+        {
+            connection.Dispose();
         }
 
         private void Dispose(bool disposing)
         {
             if (!disposed && disposing)
             {
-                connection.Dispose();
+                DisposeCore();
             }
 
             disposed = true;

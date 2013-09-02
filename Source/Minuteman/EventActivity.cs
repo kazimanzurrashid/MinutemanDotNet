@@ -31,8 +31,8 @@
             Validation.ValidateEventName(eventName);
 
             var key = GenerateKey(eventName, drilldown.ToString());
-            var fields = GenerateTimeframeFields(drilldown, timestamp);
             var eventsKey = GenerateKey();
+            var fields = GenerateTimeframeFields(drilldown, timestamp).ToList();
             var db = Settings.Db;
 
             using (var connection = await ConnectionFactory.Open())
@@ -82,51 +82,67 @@
             return result;
         }
 
-        internal static IEnumerable<string> GenerateTimeframeFields(
+        internal IEnumerable<string> GenerateTimeframeFields(
             ActivityDrilldown drilldown,
             DateTime timestamp)
         {
             yield return timestamp.FormatYear();
 
+            var separator = Settings.KeySeparator;
             var type = (int)drilldown;
 
             if (type > (int)ActivityDrilldown.Year)
             {
                 yield return timestamp.FormatYear() +
+                    separator +
                     timestamp.FormatMonth();
             }
 
             if (type > (int)ActivityDrilldown.Month)
             {
                 yield return timestamp.FormatYear() +
+                    separator +
                     timestamp.FormatMonth() +
+                    separator +
                     timestamp.FormatDay();
             }
 
             if (type > (int)ActivityDrilldown.Day)
             {
                 yield return timestamp.FormatYear() +
+                    separator +
                     timestamp.FormatMonth() +
+                    separator +
                     timestamp.FormatDay() +
+                    separator +
                     timestamp.FormatHour();
             }
 
             if (type > (int)ActivityDrilldown.Hour)
             {
                 yield return timestamp.FormatYear() +
+                    separator +
                     timestamp.FormatMonth() +
+                    separator +
                     timestamp.FormatDay() +
+                    separator +
                     timestamp.FormatHour() +
+                    separator +
                     timestamp.FormatMinute();
             }
 
             if (type > (int)ActivityDrilldown.Minute)
             {
                 yield return timestamp.FormatYear() +
+                    separator +
                     timestamp.FormatMonth() +
+                    separator +
                     timestamp.FormatDay() +
+                    separator +
                     timestamp.FormatHour() +
+                    separator +
                     timestamp.FormatMinute() +
+                    separator +
                     timestamp.FormatSecond();
             }
         }

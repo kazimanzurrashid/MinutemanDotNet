@@ -2,6 +2,7 @@
 {
     using System;
     using System.Linq;
+    using System.Threading.Tasks;
 
     using Xunit;
 
@@ -21,8 +22,9 @@
             const string EventName = "my-event";
             var now = DateTime.UtcNow;
 
-            await eventActivity.Track(EventName, now);
-            await eventActivity.Track(EventName, now);
+            await Task.WhenAll(
+                eventActivity.Track(EventName, now),
+                eventActivity.Track(EventName, now));
 
             var counts = await eventActivity.Counts(EventName, now, now);
 
@@ -35,8 +37,9 @@
             const string EventName = "my-events-2";
             var now = DateTime.UtcNow;
 
-            await eventActivity.Track(EventName, now);
-            await eventActivity.Track(EventName, now.AddHours(2));
+            await Task.WhenAll(
+                eventActivity.Track(EventName, now),
+                eventActivity.Track(EventName, now.AddHours(2)));
 
             var counts = await eventActivity.Counts(
                 EventName,

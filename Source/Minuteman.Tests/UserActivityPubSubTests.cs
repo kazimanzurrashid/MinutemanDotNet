@@ -13,11 +13,12 @@
         public UserActivityPubSubTests()
         {
             publisher = new UserActivity(
-                new ActivitySettings(ActivityDrilldown.Year));
+                new ActivitySettings(1, ActivityDrilldown.Year));
+            publisher.Reset().Wait();
         }
 
-        [Fact(Skip = "Still in infancy")]
-        public async Task ExchangesMessages()
+        [Fact]
+        public async Task ExchangesMessage()
         {
             const string EventName = "login";
             var timestamp = DateTime.UtcNow;
@@ -40,7 +41,7 @@
 
             await publisher.Track(EventName, true, 1, 2, 3);
 
-            signal.WaitOne(TimeSpan.FromSeconds(5));
+            signal.WaitOne(TimeSpan.FromSeconds(1));
 
             await subscription.Unsubscribe();
             subscription.Dispose();

@@ -33,6 +33,9 @@
             Validation.ValidateEventName(eventName);
             Validation.ValidateUsers(users);
 
+            string channel = null;
+            byte[] payload = null;
+
             var timeframeKeys = GenerateEventTimeframeKeys(
                 eventName,
                 drilldown,
@@ -42,9 +45,6 @@
 
             var db = Settings.Db;
             var tasks = new List<Task>();
-
-            string channel = null;
-            byte[] payload = null;
 
             if (publishable)
             {
@@ -74,12 +74,12 @@
 
                 tasks.Add(connection.Sets.Add(db, eventsKey, eventName));
 
+                await Task.WhenAll(tasks);
+
                 if (publishable)
                 {
-                    tasks.Add(connection.Publish(channel, payload));
+                    await connection.Publish(channel, payload);
                 }
-
-                await Task.WhenAll(tasks);
             }
         }
 
@@ -102,7 +102,7 @@
         {
             Validation.ValidateEventName(eventName);
 
-            var channel = GenerateKey() + 
+            var channel = GenerateKey() +
                 Settings.KeySeparator +
                 eventName.ToUpperInvariant();
 

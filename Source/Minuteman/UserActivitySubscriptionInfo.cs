@@ -16,7 +16,7 @@
 
         public IEnumerable<long> Users { get; set; }
 
-        internal static UserActivitySubscriptionInfo Deserialize(
+        public static UserActivitySubscriptionInfo Deserialize(
             byte[] payload)
         {
             var json = ConvertToString(payload);
@@ -49,7 +49,7 @@
             }
         }
 
-        internal byte[] Serialize()
+        public byte[] Serialize()
         {
             var json = new StringBuilder();
 
