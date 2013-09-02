@@ -42,7 +42,7 @@
                 Timestamp)
                 .ElementAt((int)drilldown);
 
-            using (var connection = await ConnectionFactory.Open())
+            using (var connection = await ConnectionFactories.Open())
             {
                 var result = await connection.Strings.Get(
                     UserActivity.Settings.Db,

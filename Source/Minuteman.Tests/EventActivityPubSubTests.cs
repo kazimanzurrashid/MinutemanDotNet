@@ -6,26 +6,21 @@
 
     using Xunit;
 
-    public class UserActivityPubSubTests : IDisposable
+    public class EventActivityPubSubTests: IDisposable
     {
-        private readonly UserActivity publisher;
+        private readonly EventActivity publisher;
 
-        public UserActivityPubSubTests()
+        public EventActivityPubSubTests()
         {
-            publisher = new UserActivity(
+            publisher = new EventActivity(
                 new ActivitySettings(1, ActivityDrilldown.Year));
-            publisher.Reset().Wait();
-        }
-
-        public void Dispose()
-        {
             publisher.Reset().Wait();
         }
 
         [Fact]
         public async Task ExchangesMessage()
         {
-            const string EventName = "login";
+            const string EventName = "order-placed";
             var timestamp = DateTime.UtcNow;
 
             var signal = new ManualResetEvent(false);
@@ -36,20 +31,24 @@
                     {
                         Assert.Equal(EventName, e.EventName);
                         Assert.Equal(timestamp, e.Timestamp);
-                        Assert.Contains(1, e.Users);
-                        Assert.Contains(2, e.Users);
-                        Assert.Contains(3, e.Users);
+                        Assert.Equal(ActivityDrilldown.Year, e.Drilldown);
+                        Assert.Equal(1, e.Count);
                         signal.Set();
                     });
 
             await subscription.Subscribe();
 
-            await publisher.Track(EventName, true, 1, 2, 3);
+            await publisher.Track(EventName, timestamp, true);
 
             signal.WaitOne(TimeSpan.FromSeconds(1));
 
             await subscription.Unsubscribe();
             subscription.Dispose();
+        }
+
+        public void Dispose()
+        {
+            publisher.Reset().Wait();
         }
     }
 }

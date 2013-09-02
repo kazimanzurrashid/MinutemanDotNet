@@ -15,7 +15,24 @@
         public static Task Track(
             this IEventActivity instance,
             string eventName,
+            bool publishable)
+        {
+            return Track(instance, eventName, DateTime.UtcNow, publishable);
+        }
+
+        public static Task Track(
+            this IEventActivity instance,
+            string eventName,
             DateTime timestamp)
+        {
+            return Track(instance, eventName, timestamp, false);
+        }
+
+        public static Task Track(
+            this IEventActivity instance,
+            string eventName,
+            DateTime timestamp,
+            bool publishable)
         {
             if (instance == null)
             {
@@ -23,9 +40,10 @@
             }
 
             return instance.Track(
-                eventName, 
+                eventName,
                 instance.Settings.Drilldown,
-                timestamp);
+                timestamp,
+                publishable);
         }
 
         public static Task<long[]> Counts(

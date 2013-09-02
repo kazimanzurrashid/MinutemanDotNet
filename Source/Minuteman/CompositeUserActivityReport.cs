@@ -46,7 +46,7 @@
         {
             Validation.ValidateUsers(users);
 
-            using (var connection = await ConnectionFactory.Open())
+            using (var connection = await ConnectionFactories.Open())
             {
                 await PerformBitOperation(connection);
 
@@ -56,7 +56,7 @@
 
         public override async Task<long> Count()
         {
-            using (var connection = await ConnectionFactory.Open())
+            using (var connection = await ConnectionFactories.Open())
             {
                 await PerformBitOperation(connection);
 

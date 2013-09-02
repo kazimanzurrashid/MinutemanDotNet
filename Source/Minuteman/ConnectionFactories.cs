@@ -5,7 +5,7 @@
 
     using BookSleeve;
 
-    public static class ConnectionFactory
+    public static class ConnectionFactories
     {
         private static Func<RedisConnection> factory = () =>
             new RedisConnection("localhost");

@@ -8,6 +8,6 @@
     <owners>$author$</owners>
     <projectUrl>https://github.com/kazimanzurrashid/MinutemanDotNet</projectUrl>
     <description>$description$</description>
-    <tags>Analytics Redis Performance</tags>
+    <tags>analytics redis performance live realtime pubsub</tags>
   </metadata>
 </package>

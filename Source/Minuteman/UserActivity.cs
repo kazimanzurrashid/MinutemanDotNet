@@ -5,7 +5,8 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    public class UserActivity : Activity, IUserActivity
+    public class UserActivity : Activity<UserActivitySubscriptionInfo>,
+        IUserActivity
     {
         private static readonly string EventsKeyName =
             typeof(UserActivity).Name;
@@ -60,7 +61,7 @@
                 }.Serialize();
             }
 
-            using (var connection = await ConnectionFactory.Open())
+            using (var connection = await ConnectionFactories.Open())
             {
                 foreach (var timeframeKey in timeframeKeys)
                 {
@@ -94,24 +95,6 @@
                 eventName, drilldown, timestamp).ElementAt((int)drilldown);
 
             return new UserActivityReport(Settings.Db, eventKey);
-        }
-
-        public virtual IUserActivitySubscription CreateSubscription(
-            string eventName,
-            Action<UserActivitySubscriptionInfo> action)
-        {
-            Validation.ValidateEventName(eventName);
-
-            var channel = GenerateKey() +
-                Settings.KeySeparator +
-                eventName.ToUpperInvariant();
-
-            var subscription = new UserActivitySubscription(
-                ConnectionFactory.SubscriberFactory(),
-                channel,
-                action);
-
-            return subscription;
         }
 
         internal IEnumerable<string> GenerateEventTimeframeKeys(

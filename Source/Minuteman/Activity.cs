@@ -5,7 +5,8 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    public abstract class Activity : IActivity
+    public abstract class Activity<TInfo> : IActivity
+        where TInfo : Info
     {
         protected Activity(ActivitySettings settings)
         {
@@ -27,7 +28,7 @@
             var db = Settings.Db;
             string[] names;
 
-            using (var connection = await ConnectionFactory.Open())
+            using (var connection = await ConnectionFactories.Open())
             {
                 names = await connection.Sets.GetAllString(db, eventsKey);
             }
@@ -43,7 +44,7 @@
             var wildcard = GenerateKey() + "*";
             var db = Settings.Db;
 
-            using (var connection = await ConnectionFactory.Open())
+            using (var connection = await ConnectionFactories.Open())
             {
                 var keys = await connection.Keys.Find(db, wildcard);
 
@@ -54,6 +55,24 @@
             }
 
             return result;
+        }
+
+        public virtual ISubscription CreateSubscription(
+            string eventName,
+            Action<TInfo> action)
+        {
+            Validation.ValidateEventName(eventName);
+
+            var channel = GenerateKey() +
+                Settings.KeySeparator +
+                eventName.ToUpperInvariant();
+
+            var subscription = new Subscription<TInfo>(
+                ConnectionFactories.SubscriberFactory(),
+                channel,
+                action);
+
+            return subscription;
         }
 
         protected internal string GenerateKey(params string[] parts)

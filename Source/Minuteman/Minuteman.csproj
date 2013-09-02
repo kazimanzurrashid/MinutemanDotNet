@@ -52,7 +52,7 @@
     <Compile Include="ActivityDrilldown.cs" />
     <Compile Include="ActivitySettings.cs" />
     <Compile Include="CompositeUserActivityReport.cs" />
-    <Compile Include="ConnectionFactory.cs" />
+    <Compile Include="ConnectionFactories.cs" />
     <Compile Include="DateTimeExtensions.cs" />
     <Compile Include="ErrorMessages.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -61,16 +61,18 @@
     </Compile>
     <Compile Include="EventActivity.cs" />
     <Compile Include="EventActivityExtensions.cs" />
+    <Compile Include="EventActivitySubscriptionInfo.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IActivity.cs" />
     <Compile Include="IEventActivity.cs" />
+    <Compile Include="Info.cs" />
     <Compile Include="IUserActivity.cs" />
-    <Compile Include="IUserActivitySubscription.cs" />
+    <Compile Include="ISubscription.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Subscription.cs" />
     <Compile Include="UserActivity.cs" />
     <Compile Include="UserActivityExtensions.cs" />
     <Compile Include="UserActivityReport.cs" />
-    <Compile Include="UserActivitySubscription.cs" />
     <Compile Include="UserActivitySubscriptionInfo.cs" />
     <Compile Include="Validation.cs" />
   </ItemGroup>

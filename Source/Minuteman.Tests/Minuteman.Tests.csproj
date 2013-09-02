@@ -53,6 +53,7 @@
     <Compile Include="EventActivityHourTrackTests.cs" />
     <Compile Include="EventActivityMinuteTrackTests.cs" />
     <Compile Include="EventActivityMonthTrackTests.cs" />
+    <Compile Include="EventActivityPubSubTests.cs" />
     <Compile Include="EventActivityResetTests.cs" />
     <Compile Include="EventActivitySecondTrackTests.cs" />
     <Compile Include="EventActivityTrackTests.cs" />

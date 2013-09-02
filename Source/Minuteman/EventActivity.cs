@@ -5,7 +5,8 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    public class EventActivity : Activity, IEventActivity
+    public class EventActivity : Activity<EventActivitySubscriptionInfo>,
+        IEventActivity
     {
         private static readonly string EventsKeyName =
             typeof(EventActivity).Name;
@@ -26,7 +27,8 @@
         public virtual async Task Track(
             string eventName,
             ActivityDrilldown drilldown,
-            DateTime timestamp)
+            DateTime timestamp,
+            bool publishable)
         {
             Validation.ValidateEventName(eventName);
 
@@ -35,17 +37,35 @@
             var fields = GenerateTimeframeFields(drilldown, timestamp).ToList();
             var db = Settings.Db;
 
-            using (var connection = await ConnectionFactory.Open())
+            using (var connection = await ConnectionFactories.Open())
             {
+                await connection.Sets.Add(db, eventsKey, eventName);
+
                 var tasks = fields
                     .Select(field => connection.Hashes
                         .Increment(db, key, field))
-                    .Cast<Task>()
                     .ToList();
 
-                tasks.Add(connection.Sets.Add(db, eventsKey, eventName));
+                var counts = await Task.WhenAll(tasks);
 
-                await Task.WhenAll(tasks);
+                if (!publishable)
+                {
+                    return;
+                }
+
+                var channel = eventsKey +
+                    Settings.KeySeparator +
+                    eventName.ToUpperInvariant();
+
+                var payload = new EventActivitySubscriptionInfo
+                {
+                    EventName = eventName,
+                    Timestamp = timestamp,
+                    Drilldown = drilldown,
+                    Count = counts.ElementAt((int)drilldown)
+                }.Serialize();
+
+                await connection.Publish(channel, payload);
             }
         }
 
@@ -67,7 +87,7 @@
 
             string[] values;
 
-            using (var connection = await ConnectionFactory.Open())
+            using (var connection = await ConnectionFactories.Open())
             {
                 values = await connection.Hashes.GetString(
                     Settings.Db,

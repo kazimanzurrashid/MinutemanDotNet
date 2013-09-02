@@ -6,18 +6,19 @@
     using BookSleeve;
 
     [CLSCompliant(false)]
-    public class UserActivitySubscription : IUserActivitySubscription
+    public class Subscription<TInfo> : ISubscription
+        where TInfo : Info
     {
         private readonly RedisSubscriberConnection connection;
         private readonly string channel;
-        private readonly Action<UserActivitySubscriptionInfo> action;
+        private readonly Action<TInfo> action;
 
         private bool disposed;
- 
-        public UserActivitySubscription(
+
+        public Subscription(
             RedisSubscriberConnection connection,
             string channel,
-            Action<UserActivitySubscriptionInfo> action)
+            Action<TInfo> action)
         {
             if (connection == null)
             {
@@ -26,7 +27,7 @@
 
             Validation.ValidateString(
                 channel,
-                ErrorMessages.UserActivitySubscription_Constructor_Channel_Required,
+                ErrorMessages.Subscription_Constructor_Channel_Required,
                 "channel");
 
             if (action == null)
@@ -39,7 +40,7 @@
             this.action = action;
         }
 
-        ~UserActivitySubscription()
+        ~Subscription()
         {
             Dispose(false);
         }
@@ -60,7 +61,8 @@
             await connection.Subscribe(
                 channel,
                 (key, data) =>
-                    action(UserActivitySubscriptionInfo.Deserialize(data)));
+                    action(Info.Deserialize<TInfo>(
+                        data)));
         }
 
         public virtual Task Unsubscribe()

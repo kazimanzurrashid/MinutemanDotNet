@@ -17,7 +17,7 @@
             ActivityDrilldown drilldown,
             DateTime timestamp);
 
-        IUserActivitySubscription CreateSubscription(
+        ISubscription CreateSubscription(
             string eventName,
             Action<UserActivitySubscriptionInfo> action);
     }

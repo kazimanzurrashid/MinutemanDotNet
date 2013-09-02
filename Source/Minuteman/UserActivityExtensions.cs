@@ -19,7 +19,12 @@
             bool publishable,
             params long[] users)
         {
-            return Track(instance, eventName, DateTime.UtcNow, publishable, users);
+            return Track(
+                instance,
+                eventName,
+                DateTime.UtcNow, 
+                publishable,
+                users);
         }
 
         public static Task Track(

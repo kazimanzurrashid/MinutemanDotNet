@@ -3,7 +3,7 @@
     using System;
     using System.Threading.Tasks;
 
-    public interface IUserActivitySubscription : IDisposable
+    public interface ISubscription : IDisposable
     {
         Task Subscribe();
 
