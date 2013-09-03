@@ -34,8 +34,7 @@
                 info.EventName,
                 info.Drilldown.ToString(),
                 info.Timestamp,
-                info.Count,
-                info.Drilldown);
+                info.Count);
         }
     }
 }

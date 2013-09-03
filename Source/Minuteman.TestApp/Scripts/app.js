@@ -15,7 +15,6 @@
             timestamp: timestamp,
             count: count
         };
-        console.dir(event);
         data.push(event);
         if (data.length > MAX_HISTORY) {
             data = data.slice(1, MAX_HISTORY + 1);
