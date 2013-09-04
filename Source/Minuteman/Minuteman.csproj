@@ -73,6 +73,7 @@
     <Compile Include="UserActivity.cs" />
     <Compile Include="UserActivityExtensions.cs" />
     <Compile Include="UserActivityReport.cs" />
+    <Compile Include="UserActivityReportExtensions.cs" />
     <Compile Include="UserActivitySubscriptionInfo.cs" />
     <Compile Include="Validation.cs" />
   </ItemGroup>

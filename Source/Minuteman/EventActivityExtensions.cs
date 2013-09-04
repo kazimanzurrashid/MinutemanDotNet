@@ -1,6 +1,7 @@
 ﻿namespace Minuteman
 {
     using System;
+    using System.Linq;
     using System.Threading.Tasks;
 
     public static class EventActivityExtensions
@@ -62,6 +63,46 @@
                 startTimestamp,
                 endTimestamp,
                 instance.Settings.Drilldown);
+        }
+
+        public static Task<long> Count(
+            this IEventActivity instance,
+            string eventName,
+            DateTime startTimestamp,
+            DateTime endTimestamp)
+        {
+            if (instance == null)
+            {
+                throw new ArgumentNullException("instance");
+            }
+
+            return Count(
+                instance,
+                eventName,
+                startTimestamp,
+                endTimestamp,
+                instance.Settings.Drilldown);
+        }
+
+        public static async Task<long> Count(
+            this IEventActivity instance,
+            string eventName,
+            DateTime startTimestamp,
+            DateTime endTimestamp,
+            ActivityDrilldown drilldown)
+        {
+            if (instance == null)
+            {
+                throw new ArgumentNullException("instance");
+            }
+
+            var result = await instance.Counts(
+                eventName,
+                startTimestamp,
+                endTimestamp,
+                drilldown);
+
+            return result.First();
         }
     }
 }
