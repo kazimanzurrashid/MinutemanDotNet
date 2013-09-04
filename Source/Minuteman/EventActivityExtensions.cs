@@ -6,14 +6,14 @@
 
     public static class EventActivityExtensions
     {
-        public static Task Track(
+        public static Task<long> Track(
             this IEventActivity instance,
             string eventName)
         {
             return Track(instance, eventName, DateTime.UtcNow);
         }
 
-        public static Task Track(
+        public static Task<long> Track(
             this IEventActivity instance,
             string eventName,
             bool publishable)
@@ -21,7 +21,7 @@
             return Track(instance, eventName, DateTime.UtcNow, publishable);
         }
 
-        public static Task Track(
+        public static Task<long> Track(
             this IEventActivity instance,
             string eventName,
             DateTime timestamp)
@@ -29,7 +29,7 @@
             return Track(instance, eventName, timestamp, false);
         }
 
-        public static Task Track(
+        public static Task<long> Track(
             this IEventActivity instance,
             string eventName,
             DateTime timestamp,

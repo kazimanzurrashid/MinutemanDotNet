@@ -24,7 +24,7 @@
             get { return EventsKeyName; }
         }
 
-        public virtual async Task Track(
+        public virtual async Task<long> Track(
             string eventName,
             ActivityDrilldown drilldown,
             DateTime timestamp,
@@ -47,10 +47,11 @@
                     .ToList();
 
                 var counts = await Task.WhenAll(tasks);
+                var count = counts.ElementAt((int)drilldown);
 
                 if (!publishable)
                 {
-                    return;
+                    return count;
                 }
 
                 var channel = eventsKey +
@@ -66,6 +67,8 @@
                 }.Serialize();
 
                 await connection.Publish(channel, payload);
+
+                return count;
             }
         }
 

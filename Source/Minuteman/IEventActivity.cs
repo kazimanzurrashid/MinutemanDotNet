@@ -5,7 +5,7 @@
 
     public interface IEventActivity : IActivity
     {
-        Task Track(
+        Task<long> Track(
             string eventName,
             ActivityDrilldown drilldown,
             DateTime timestamp,
