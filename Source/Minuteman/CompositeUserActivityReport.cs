@@ -1,6 +1,7 @@
 ﻿namespace Minuteman
 {
     using System;
+    using System.Collections.Generic;
     using System.Globalization;
     using System.Threading.Tasks;
 
@@ -12,8 +13,8 @@
             int db,
             string key,
             string operation,
-            string leftKey,
-            string rightKey)
+            UserActivityReport left,
+            UserActivityReport right)
             : base(db, key)
         {
             Validation.ValidateString(
@@ -21,26 +22,26 @@
                 ErrorMessages.CompositeUserActivityReport_Constructor_Operation_Required,
                 "operation");
 
-            Validation.ValidateString(
-                leftKey,
-                ErrorMessages.CompositeUserActivityReport_Constructor_LeftKey_Required,
-                "leftKey");
+            if (left == null)
+            {
+                throw new ArgumentNullException("left");
+            }
 
-            Validation.ValidateString(
-                rightKey,
-                ErrorMessages.CompositeUserActivityReport_Constructor_RightKey_Required,
-                "rightKey");
+            if (left == null)
+            {
+                throw new ArgumentNullException("left");
+            }
 
             Operation = operation;
-            LeftKey = leftKey;
-            RightKey = rightKey;
+            Left = left;
+            Right = right;
         }
 
         protected string Operation { get; private set; }
 
-        protected string LeftKey { get; private set; }
+        protected UserActivityReport Left { get; private set; }
 
-        protected string RightKey { get; private set; }
+        protected UserActivityReport Right { get; private set; }
 
         public override async Task<bool[]> Includes(params long[] users)
         {
@@ -67,13 +68,33 @@
         internal async Task<long> PerformBitOperation(
             RedisConnection connection)
         {
-            var keys = new[] { LeftKey, RightKey };
+            var leftComposite = Left as CompositeUserActivityReport;
+            var rightComposite = Right as CompositeUserActivityReport;
+
+            var tasks = new List<Task>();
+
+            if (leftComposite != null)
+            {
+                tasks.Add(leftComposite.PerformBitOperation(connection));
+            }
+
+            if (rightComposite != null)
+            {
+                tasks.Add(rightComposite.PerformBitOperation(connection));
+            }
+
+            if (tasks.Count > 0)
+            {
+                await Task.WhenAll(tasks);
+            }
+
+            var keys = new[] { Left.Key, Right.Key };
 
             if ("AND".Equals(Operation, StringComparison.Ordinal))
             {
                 return await connection.Strings.BitwiseAnd(Db, Key, keys);
             }
-            
+
             if ("OR".Equals(Operation, StringComparison.Ordinal))
             {
                 return await connection.Strings.BitwiseOr(Db, Key, keys);

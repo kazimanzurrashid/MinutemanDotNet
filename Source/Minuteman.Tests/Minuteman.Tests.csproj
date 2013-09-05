@@ -59,6 +59,7 @@
     <Compile Include="EventActivityTrackTests.cs" />
     <Compile Include="EventActivityYearTrackTests.cs" />
     <Compile Include="UserActivityAndCountTests.cs" />
+    <Compile Include="UserActivityMultipleBitOperationTests.cs" />
     <Compile Include="UserActivityOrCountTests.cs" />
     <Compile Include="UserActivityOrIncludesTests.cs" />
     <Compile Include="UserActivityAndIncludesTests.cs" />

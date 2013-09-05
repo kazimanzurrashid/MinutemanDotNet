@@ -20,9 +20,9 @@
             Key = key;
         }
 
-        protected int Db { get; private set; }
+        protected internal int Db { get; private set; }
 
-        protected string Key { get; private set; }
+        protected internal string Key { get; private set; }
 
         public static UserActivityReport BitwiseAnd(
             UserActivityReport left,
@@ -44,8 +44,8 @@
                 left.Db,
                 key,
                 "AND",
-                left.Key,
-                right.Key);
+                left,
+                right);
         }
 
         public static UserActivityReport BitwiseOr(
@@ -68,8 +68,8 @@
                 left.Db,
                 key,
                 "OR",
-                left.Key,
-                right.Key);
+                left,
+                right);
         }
 
         public static UserActivityReport Xor(
@@ -92,8 +92,8 @@
                 left.Db,
                 key,
                 "XOR",
-                left.Key,
-                right.Key);
+                left,
+                right);
         }
 
         public static UserActivityReport operator &(
