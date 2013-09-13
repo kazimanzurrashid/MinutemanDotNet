@@ -6,19 +6,17 @@
     using BookSleeve;
 
     [CLSCompliant(false)]
-    public class Subscription<TInfo> : ISubscription
+    public class Subscription<TInfo> : ISubscription<TInfo>
         where TInfo : Info
     {
         private readonly RedisSubscriberConnection connection;
-        private readonly string channel;
-        private readonly Action<TInfo> action;
+        private readonly string prefix;
 
         private bool disposed;
 
         public Subscription(
             RedisSubscriberConnection connection,
-            string channel,
-            Action<TInfo> action)
+            string prefix)
         {
             if (connection == null)
             {
@@ -26,18 +24,12 @@
             }
 
             Validation.ValidateString(
-                channel,
-                ErrorMessages.Subscription_Constructor_Channel_Required,
-                "channel");
-
-            if (action == null)
-            {
-                throw new ArgumentNullException("action");
-            }
+                prefix,
+                ErrorMessages.Subscription_Constructor_Prefix_Required,
+                "prefix");
 
             this.connection = connection;
-            this.channel = channel;
-            this.action = action;
+            this.prefix = prefix;
         }
 
         ~Subscription()
@@ -51,23 +43,32 @@
             GC.SuppressFinalize(this);
         }
 
-        public virtual async Task Subscribe()
+        public virtual async Task Subscribe(
+            string eventName,
+            Action<TInfo> action)
         {
+            if (action == null)
+            {
+                throw new ArgumentNullException("action");
+            }
+
             if (connection.State == RedisConnectionBase.ConnectionState.New)
             {
                 await connection.Open();
             }
 
+            var channel = Channel(eventName);
+
             await connection.Subscribe(
                 channel,
-                (key, data) =>
-                    action(Info.Deserialize<TInfo>(
-                        data)));
+                (key, data) => action(Info.Deserialize<TInfo>(data)));
         }
 
-        public virtual Task Unsubscribe()
+        public virtual async Task Unsubscribe(string eventName)
         {
-            return connection.Unsubscribe(channel);
+            var channel = Channel(eventName);
+
+            await connection.Unsubscribe(channel);
         }
 
         protected virtual void DisposeCore()
@@ -83,6 +84,13 @@
             }
 
             disposed = true;
+        }
+
+        private string Channel(string eventName)
+        {
+            Validation.ValidateEventName(eventName);
+
+            return prefix + eventName.ToUpperInvariant();
         }
     }
 }

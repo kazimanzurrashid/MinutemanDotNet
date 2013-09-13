@@ -7,14 +7,14 @@
     public class UserActivitySecondTrackTests : UserActivityMinuteTrackTests
     {
         public UserActivitySecondTrackTests()
-            : base(ActivityDrilldown.Second)
+            : base(ActivityTimeframe.Second)
         {
         }
 
         [Fact]
         public async Task CreatesSecondEntry()
         {
-            await TestExists(ActivityDrilldown.Second);
+            await TestExists(ActivityTimeframe.Second);
         }
     }
 }

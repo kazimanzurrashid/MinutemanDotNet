@@ -132,19 +132,13 @@
   <data name="Validation_ValidateDb_Negative" xml:space="preserve">
     <value>Db cannot be negative.</value>
   </data>
-  <data name="CompositeUserActivityReport_Constructor_LeftKey_Required" xml:space="preserve">
-    <value>Left key is required.</value>
-  </data>
   <data name="CompositeUserActivityReport_Constructor_Operation_Required" xml:space="preserve">
     <value>Operation is required.</value>
-  </data>
-  <data name="CompositeUserActivityReport_Constructor_RightKey_Required" xml:space="preserve">
-    <value>Right key is required.</value>
   </data>
   <data name="CompositeUserActivityReport_PerformBitOperation_Unsupported" xml:space="preserve">
     <value>Operation "{0}" is not supported.</value>
   </data>
-  <data name="Subscription_Constructor_Channel_Required" xml:space="preserve">
-    <value>Channel is required.</value>
+  <data name="Subscription_Constructor_Prefix_Required" xml:space="preserve">
+    <value>Prefix is required.</value>
   </data>
 </root>

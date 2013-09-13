@@ -61,29 +61,11 @@ namespace Minuteman {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Left key is required..
-        /// </summary>
-        internal static string CompositeUserActivityReport_Constructor_LeftKey_Required {
-            get {
-                return ResourceManager.GetString("CompositeUserActivityReport_Constructor_LeftKey_Required", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Operation is required..
         /// </summary>
         internal static string CompositeUserActivityReport_Constructor_Operation_Required {
             get {
                 return ResourceManager.GetString("CompositeUserActivityReport_Constructor_Operation_Required", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Right key is required..
-        /// </summary>
-        internal static string CompositeUserActivityReport_Constructor_RightKey_Required {
-            get {
-                return ResourceManager.GetString("CompositeUserActivityReport_Constructor_RightKey_Required", resourceCulture);
             }
         }
         
@@ -97,11 +79,11 @@ namespace Minuteman {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Channel is required..
+        ///   Looks up a localized string similar to Prefix is required..
         /// </summary>
-        internal static string Subscription_Constructor_Channel_Required {
+        internal static string Subscription_Constructor_Prefix_Required {
             get {
-                return ResourceManager.GetString("Subscription_Constructor_Channel_Required", resourceCulture);
+                return ResourceManager.GetString("Subscription_Constructor_Prefix_Required", resourceCulture);
             }
         }
         

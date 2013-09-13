@@ -3,10 +3,10 @@
     using System;
     using System.Threading.Tasks;
 
-    public interface ISubscription : IDisposable
+    public interface ISubscription<out TInfo> : IDisposable where TInfo : Info
     {
-        Task Subscribe();
+        Task Subscribe(string eventName, Action<TInfo> action);
 
-        Task Unsubscribe();
+        Task Unsubscribe(string eventName);
     }
 }

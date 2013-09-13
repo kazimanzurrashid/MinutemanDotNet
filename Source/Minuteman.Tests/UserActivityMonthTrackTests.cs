@@ -7,19 +7,20 @@
     public class UserActivityMonthTrackTests : UserActivityYearTrackTests
     {
         public UserActivityMonthTrackTests() :
-            this(ActivityDrilldown.Month)
+            this(ActivityTimeframe.Month)
         {
         }
 
         protected UserActivityMonthTrackTests(
-            ActivityDrilldown drilldown) : base(drilldown)
+            ActivityTimeframe timeframe)
+            : base(timeframe)
         {
         }
 
         [Fact]
         public async Task CreatesMonthEntry()
         {
-            await TestExists(ActivityDrilldown.Month);
+            await TestExists(ActivityTimeframe.Month);
         }
     }
 }

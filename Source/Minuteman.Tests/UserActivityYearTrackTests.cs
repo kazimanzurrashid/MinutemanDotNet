@@ -7,19 +7,20 @@
     public class UserActivityYearTrackTests : UserActivityTrackTests
     {
         public UserActivityYearTrackTests() :
-            this(ActivityDrilldown.Year)
+            this(ActivityTimeframe.Year)
         {
         }
 
         protected UserActivityYearTrackTests(
-            ActivityDrilldown drilldown) : base(drilldown)
+            ActivityTimeframe timeframe)
+            : base(timeframe)
         {
         }
 
         [Fact]
         public async Task CreatesYearEntry()
         {
-            await TestExists(ActivityDrilldown.Year);
+            await TestExists(ActivityTimeframe.Year);
         }
     }
 }

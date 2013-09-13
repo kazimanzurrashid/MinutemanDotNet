@@ -42,7 +42,7 @@
 
             return instance.Track(
                 eventName,
-                instance.Settings.Drilldown,
+                instance.Settings.Timeframe,
                 timestamp,
                 publishable);
         }
@@ -62,7 +62,7 @@
                 eventName,
                 startTimestamp,
                 endTimestamp,
-                instance.Settings.Drilldown);
+                instance.Settings.Timeframe);
         }
 
         public static Task<long> Count(
@@ -81,7 +81,7 @@
                 eventName,
                 startTimestamp,
                 endTimestamp,
-                instance.Settings.Drilldown);
+                instance.Settings.Timeframe);
         }
 
         public static async Task<long> Count(
@@ -89,7 +89,7 @@
             string eventName,
             DateTime startTimestamp,
             DateTime endTimestamp,
-            ActivityDrilldown drilldown)
+            ActivityTimeframe timeframe)
         {
             if (instance == null)
             {
@@ -100,7 +100,7 @@
                 eventName,
                 startTimestamp,
                 endTimestamp,
-                drilldown);
+                timeframe);
 
             return result.First();
         }

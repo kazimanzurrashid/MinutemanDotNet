@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width">
+  <title>Minuteman</title>
+  <link href="Content/app.css" rel="stylesheet" />
+  <script src="Scripts/foundation/custom.modernizr.js"></script>
+</head>
+  <body>
+    <div class="row">
+      <div class="large-12 columns">
+        <header class="top-bar">
+          <ul class="title-area">
+            <li class="name">
+              <h1>
+                <a href="/">Minuteman</a>
+              </h1>
+            </li>
+          </ul>
+        </header>
+      </div>
+    </div>
+    <div class="row">
+      <div id="content" class="large-9 push-3 columns" role="main"></div>
+      <div class="large-3 pull-9 columns">
+        <nav class="section-container accordion" data-section="accordion">
+          <div class="section">
+            <p class="title">
+              <a href="#!/user-activity" rel="nofollow">User Activity</a>
+            </p>
+            <div class="content">
+              <ul id="user-activity-list" class="side-nav">
+                <li>loading...</li>
+              </ul>
+            </div>
+          </div>
+          <div class="section">
+            <p class="title">
+              <a href="#!/event-activity" rel="nofollow">Event Activity</a>
+            </p>
+            <div class="content">
+              <ul id="event-activity-list" class="side-nav">
+                <li>loading...</li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+    <script src="Scripts/jquery-2.0.3.js"></script>
+    <script src="Scripts/jquery.signalR-1.1.3.js"></script>
+    <script src="Scripts/underscore.js"></script>
+    <script src="Scripts/backbone.js"></script>
+    <script src="Scripts/foundation/foundation.js"></script>
+    <script src="Scripts/foundation/foundation.section.js"></script>
+    <script src="Scripts/moment.js"></script>
+    <script src="Scripts/flot/jquery.flot.js"></script>
+    <script src="Scripts/flot/jquery.flot.time.js"></script>
+    <script src="/signalr/hubs"></script>
+    <script src="Scripts/app.js"></script>
+  </body>
+</html>

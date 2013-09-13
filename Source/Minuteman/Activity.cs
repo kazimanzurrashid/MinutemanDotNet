@@ -5,7 +5,7 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    public abstract class Activity<TInfo> : IActivity
+    public abstract class Activity<TInfo> : IActivity<TInfo>
         where TInfo : Info
     {
         protected Activity(ActivitySettings settings)
@@ -22,27 +22,60 @@
 
         protected abstract string Prefix { get; }
 
-        public virtual async Task<IEnumerable<string>> EventNames()
+        public virtual async Task<IEnumerable<string>> EventNames(
+            bool onlyPublished)
         {
             var eventsKey = GenerateKey();
-            var db = Settings.Db;
-            string[] names;
+
+            if (onlyPublished)
+            {
+                eventsKey += Settings.KeySeparator + "published";
+            }
+
+            string[] members;
 
             using (var connection = await ConnectionFactories.Open())
             {
-                names = await connection.Sets.GetAllString(db, eventsKey);
+                members = await connection.Sets.GetAllString(
+                    Settings.Db,
+                    eventsKey);
             }
 
-            var result = names.Select(RemoveKeyPrefix);
+            var result = members.Select(RemoveKeyPrefix)
+                .OrderBy(n => n)
+                .ToList();
+
+            return result;
+        }
+
+        public virtual async Task<IEnumerable<ActivityTimeframe>> Timeframes(
+            string eventName)
+        {
+            Validation.ValidateEventName(eventName);
+
+            var key = GenerateKey() +
+                Settings.KeySeparator +
+                eventName;
+
+            string[] members;
+
+            using (var connection = await ConnectionFactories.Open())
+            {
+                members = await connection.Sets.GetAllString(Settings.Db, key);
+            }
+
+            var result = members.Select(m => 
+                (ActivityTimeframe)Enum.Parse(typeof(ActivityTimeframe), m))
+                .ToList();
 
             return result;
         }
 
         public virtual async Task<long> Reset()
         {
-            long result = 0;
             var wildcard = GenerateKey() + "*";
             var db = Settings.Db;
+            long result = 0;
 
             using (var connection = await ConnectionFactories.Open())
             {
@@ -57,20 +90,13 @@
             return result;
         }
 
-        public virtual ISubscription CreateSubscription(
-            string eventName,
-            Action<TInfo> action)
+        public virtual ISubscription<TInfo> CreateSubscription()
         {
-            Validation.ValidateEventName(eventName);
-
-            var channel = GenerateKey() +
-                Settings.KeySeparator +
-                eventName.ToUpperInvariant();
+            var prefix = GenerateKey() + Settings.KeySeparator;
 
             var subscription = new Subscription<TInfo>(
                 ConnectionFactories.SubscriberFactory(),
-                channel,
-                action);
+                prefix);
 
             return subscription;
         }

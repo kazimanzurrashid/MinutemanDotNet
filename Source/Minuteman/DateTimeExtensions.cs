@@ -15,7 +15,7 @@
         public static IEnumerable<DateTime> Range(
             this DateTime instance,
             DateTime other,
-            ActivityDrilldown drilldown)
+            ActivityTimeframe timeframe)
         {
             var backward = instance > other;
             var increment = backward ? -1 : 1;
@@ -28,39 +28,39 @@
 
             while (outer(counter, other))
             {
-                switch (drilldown)
+                switch (timeframe)
                 {
-                    case ActivityDrilldown.Hour:
+                    case ActivityTimeframe.Hour:
                         {
                             counter = counter.AddHours(increment);
                             break;
                         }
 
-                    case ActivityDrilldown.Day:
+                    case ActivityTimeframe.Day:
                         {
                             counter = counter.AddDays(increment);
                             break;
                         }
 
-                    case ActivityDrilldown.Month:
+                    case ActivityTimeframe.Month:
                         {
                             counter = counter.AddMonths(increment);
                             break;
                         }
 
-                    case ActivityDrilldown.Minute:
+                    case ActivityTimeframe.Minute:
                         {
                             counter = counter.AddMinutes(increment);
                             break;
                         }
 
-                    case ActivityDrilldown.Year:
+                    case ActivityTimeframe.Year:
                         {
                             counter = counter.AddYears(increment);
                             break;
                         }
 
-                    case ActivityDrilldown.Second:
+                    case ActivityTimeframe.Second:
                         {
                             counter = counter.AddSeconds(increment);
                             break;

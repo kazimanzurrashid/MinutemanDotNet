@@ -7,20 +7,20 @@
     public class EventActivityMonthTrackTests : EventActivityYearTrackTests
     {
         public EventActivityMonthTrackTests() :
-            this(ActivityDrilldown.Month)
+            this(ActivityTimeframe.Month)
         {
         }
 
         protected EventActivityMonthTrackTests(
-            ActivityDrilldown drilldown)
-            : base(drilldown)
+            ActivityTimeframe timeframe)
+            : base(timeframe)
         {
         }
 
         [Fact]
         public async Task CreatesMonthField()
         {
-            await TestExists(ActivityDrilldown.Month);
+            await TestExists(ActivityTimeframe.Month);
         }
     }
 }

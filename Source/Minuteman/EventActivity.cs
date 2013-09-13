@@ -26,28 +26,62 @@
 
         public virtual async Task<long> Track(
             string eventName,
-            ActivityDrilldown drilldown,
+            ActivityTimeframe timeframe,
             DateTime timestamp,
             bool publishable)
         {
+            // There are three tasks that we have to do here.
+            // First, we have to maintain a list of events that has 
+            // been tracked, so that, the same event list can be 
+            // returned in the EventName method. Next. we also have to
+            // maintain another list that is for time frames of the event, 
+            // please note that we are only going to maintain
+            // the explicit timeframes, the Timeframes method returns the 
+            // explicit tracked timeframes for a given event name.
+            // Second, increase the count for the matching timeframe. And at
+            // last publish the event to redis so that the subscriber can be 
+            // notified.
             Validation.ValidateEventName(eventName);
 
-            var key = GenerateKey(eventName, drilldown.ToString());
             var eventsKey = GenerateKey();
-            var fields = GenerateTimeframeFields(drilldown, timestamp).ToList();
+            var publishedEventsKey = eventsKey +
+                Settings.KeySeparator +
+                "published";
+
+            var key = GenerateKey(eventName, timeframe.ToString());
+            var fields = GenerateTimeframeFields(timeframe, timestamp).ToList();
+
             var db = Settings.Db;
 
             using (var connection = await ConnectionFactories.Open())
             {
-                await connection.Sets.Add(db, eventsKey, eventName);
+                var eventTasks = new List<Task>
+                {
+                    connection.Sets.Add(db, eventsKey, eventName),
+                    connection.Sets.Add(
+                        db,
+                        eventsKey + Settings.KeySeparator + eventName,
+                        timeframe.ToString())
+                };
 
-                var tasks = fields
+                if (publishable)
+                {
+                    eventTasks.Add(
+                        connection.Sets.Add(
+                            db,
+                            publishedEventsKey,
+                            eventName));
+                }
+
+                await Task.WhenAll(eventTasks);
+
+                var fieldTasks = fields
                     .Select(field => connection.Hashes
                         .Increment(db, key, field))
                     .ToList();
 
-                var counts = await Task.WhenAll(tasks);
-                var count = counts.ElementAt((int)drilldown);
+                var counts = await Task.WhenAll(fieldTasks);
+                var count = counts.ElementAt((int)timeframe);
 
                 if (!publishable)
                 {
@@ -62,8 +96,8 @@
                 {
                     EventName = eventName,
                     Timestamp = timestamp,
-                    Drilldown = drilldown,
-                    Count = counts.ElementAt((int)drilldown)
+                    Timeframe = timeframe,
+                    Count = counts.ElementAt((int)timeframe)
                 }.Serialize();
 
                 await connection.Publish(channel, payload);
@@ -76,16 +110,16 @@
             string eventName,
             DateTime startTimestamp,
             DateTime endTimestamp,
-            ActivityDrilldown drilldown)
+            ActivityTimeframe timeframe)
         {
             Validation.ValidateEventName(eventName);
 
-            var dates = startTimestamp.Range(endTimestamp, drilldown);
-            var key = GenerateKey(eventName, drilldown.ToString());
+            var dates = startTimestamp.Range(endTimestamp, timeframe);
+            var key = GenerateKey(eventName, timeframe.ToString());
 
             var fields = dates.Select(d =>
-                    GenerateTimeframeFields(drilldown, d)
-                        .ElementAt((int)drilldown))
+                    GenerateTimeframeFields(timeframe, d)
+                        .ElementAt((int)timeframe))
                 .ToArray();
 
             string[] values;
@@ -98,30 +132,30 @@
                     fields);
             }
 
-            var result = values.Select(v =>
-                    string.IsNullOrWhiteSpace(v) ? 0L : long.Parse(v))
+            var result = values.Select(value =>
+                    value == null ? 0L : long.Parse(value))
                 .ToArray();
 
             return result;
         }
 
         internal IEnumerable<string> GenerateTimeframeFields(
-            ActivityDrilldown drilldown,
+            ActivityTimeframe timeframe,
             DateTime timestamp)
         {
             yield return timestamp.FormatYear();
 
             var separator = Settings.KeySeparator;
-            var type = (int)drilldown;
+            var type = (int)timeframe;
 
-            if (type > (int)ActivityDrilldown.Year)
+            if (type > (int)ActivityTimeframe.Year)
             {
                 yield return timestamp.FormatYear() +
                     separator +
                     timestamp.FormatMonth();
             }
 
-            if (type > (int)ActivityDrilldown.Month)
+            if (type > (int)ActivityTimeframe.Month)
             {
                 yield return timestamp.FormatYear() +
                     separator +
@@ -130,7 +164,7 @@
                     timestamp.FormatDay();
             }
 
-            if (type > (int)ActivityDrilldown.Day)
+            if (type > (int)ActivityTimeframe.Day)
             {
                 yield return timestamp.FormatYear() +
                     separator +
@@ -141,7 +175,7 @@
                     timestamp.FormatHour();
             }
 
-            if (type > (int)ActivityDrilldown.Hour)
+            if (type > (int)ActivityTimeframe.Hour)
             {
                 yield return timestamp.FormatYear() +
                     separator +
@@ -154,7 +188,7 @@
                     timestamp.FormatMinute();
             }
 
-            if (type > (int)ActivityDrilldown.Minute)
+            if (type > (int)ActivityTimeframe.Minute)
             {
                 yield return timestamp.FormatYear() +
                     separator +

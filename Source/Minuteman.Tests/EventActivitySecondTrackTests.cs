@@ -7,14 +7,14 @@
     public class EventActivitySecondTrackTests : EventActivityMinuteTrackTests
     {
         public EventActivitySecondTrackTests() :
-            base(ActivityDrilldown.Second)
+            base(ActivityTimeframe.Second)
         {
         }
 
         [Fact]
         public async Task CreatesSecondField()
         {
-            await TestExists(ActivityDrilldown.Second);
+            await TestExists(ActivityTimeframe.Second);
         }
     }
 }

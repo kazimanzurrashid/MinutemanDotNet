@@ -15,7 +15,7 @@
         public UserActivityIncludesTest()
         {
             userActivity = new UserActivity(
-                new ActivitySettings(1, ActivityDrilldown.Year));
+                new ActivitySettings(1, ActivityTimeframe.Year));
             userActivity.Reset().Wait();
         }
 

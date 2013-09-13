@@ -11,7 +11,7 @@
         public EventActivityResetTests()
         {
             eventActivity = new EventActivity(
-                new ActivitySettings(1, ActivityDrilldown.Year));
+                new ActivitySettings(1, ActivityTimeframe.Year));
             eventActivity.Reset().Wait();
         }
 
@@ -25,8 +25,8 @@
 
             var count = await eventActivity.Reset();
 
-            // 3 tracked events and 1 for event names
-            Assert.Equal(4, count);
+            // 3 tracked events, 3 for the drilldowns and 1 for event names
+            Assert.Equal(7, count);
         }
     }
 }

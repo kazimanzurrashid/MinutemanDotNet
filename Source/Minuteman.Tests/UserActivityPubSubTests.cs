@@ -8,18 +8,18 @@
 
     public class UserActivityPubSubTests : IDisposable
     {
-        private readonly UserActivity publisher;
+        private readonly UserActivity activity;
 
         public UserActivityPubSubTests()
         {
-            publisher = new UserActivity(
-                new ActivitySettings(1, ActivityDrilldown.Year));
-            publisher.Reset().Wait();
+            activity = new UserActivity(
+                new ActivitySettings(1, ActivityTimeframe.Year));
+            activity.Reset().Wait();
         }
 
         public void Dispose()
         {
-            publisher.Reset().Wait();
+            activity.Reset().Wait();
         }
 
         [Fact]
@@ -30,7 +30,9 @@
 
             var signal = new ManualResetEvent(false);
 
-            var subscription = publisher.CreateSubscription(
+            var subscription = activity.CreateSubscription();
+
+            await subscription.Subscribe(
                 EventName,
                 e =>
                     {
@@ -42,13 +44,11 @@
                         signal.Set();
                     });
 
-            await subscription.Subscribe();
-
-            await publisher.Track(EventName, true, 1, 2, 3);
+            await activity.Track(EventName, true, 1, 2, 3);
 
             signal.WaitOne(TimeSpan.FromSeconds(1));
 
-            await subscription.Unsubscribe();
+            await subscription.Unsubscribe(EventName);
             subscription.Dispose();
         }
     }

@@ -11,6 +11,8 @@
     {
         public string EventName { get; set; }
 
+        public ActivityTimeframe Timeframe { get; set; }
+
         public DateTime Timestamp { get; set; }
 
         public static TInfo Deserialize<TInfo>(

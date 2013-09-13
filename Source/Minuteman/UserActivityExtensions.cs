@@ -50,7 +50,7 @@
 
             return instance.Track(
                 eventName,
-                instance.Settings.Drilldown,
+                instance.Settings.Timeframe,
                 timestamp,
                 publishable,
                 users);
@@ -75,7 +75,7 @@
 
             return instance.Report(
                 eventName,
-                instance.Settings.Drilldown,
+                instance.Settings.Timeframe,
                 timestamp);
         }
     }

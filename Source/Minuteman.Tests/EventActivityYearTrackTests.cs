@@ -6,20 +6,20 @@
 
     public class EventActivityYearTrackTests : EventActivityTrackTests
     {
-        public EventActivityYearTrackTests() : this(ActivityDrilldown.Year)
+        public EventActivityYearTrackTests() : this(ActivityTimeframe.Year)
         {
         }
 
         protected EventActivityYearTrackTests(
-            ActivityDrilldown drilldown)
-            : base(drilldown)
+            ActivityTimeframe timeframe)
+            : base(timeframe)
         {
         }
 
         [Fact]
         public async Task CreatesYearField()
         {
-            await TestExists(ActivityDrilldown.Year);
+            await TestExists(ActivityTimeframe.Year);
         }
     }
 }

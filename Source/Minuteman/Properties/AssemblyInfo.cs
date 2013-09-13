@@ -4,7 +4,8 @@ using System.Resources;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyInformationalVersion("1.0.0-beta1")]
+[assembly: AssemblyDescription("Redis based high performance analytics.")]
+[assembly: AssemblyInformationalVersion("1.0.0-beta3")]
 [assembly: AssemblyProduct("Minuteman")]
 [assembly: AssemblyTitle("Minuteman")]
 [assembly: CLSCompliant(true)]

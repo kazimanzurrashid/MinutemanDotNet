@@ -3,22 +3,18 @@
     using System;
     using System.Threading.Tasks;
 
-    public interface IUserActivity : IActivity
+    public interface IUserActivity : IActivity<UserActivitySubscriptionInfo>
     {
         Task Track(
             string eventName,
-            ActivityDrilldown drilldown,
+            ActivityTimeframe timeframe,
             DateTime timestamp,
             bool publishable,
             params long[] users);
 
         UserActivityReport Report(
             string eventName,
-            ActivityDrilldown drilldown,
+            ActivityTimeframe timeframe,
             DateTime timestamp);
-
-        ISubscription CreateSubscription(
-            string eventName,
-            Action<UserActivitySubscriptionInfo> action);
     }
 }

@@ -26,7 +26,7 @@
 
         public virtual async Task Track(
             string eventName,
-            ActivityDrilldown drilldown,
+            ActivityTimeframe timeframe,
             DateTime timestamp,
             bool publishable,
             params long[] users)
@@ -34,18 +34,13 @@
             Validation.ValidateEventName(eventName);
             Validation.ValidateUsers(users);
 
+            var eventsKey = GenerateKey();
+            var publishedEventsKey = eventsKey +
+                Settings.KeySeparator +
+                "published";
+
             string channel = null;
             byte[] payload = null;
-
-            var timeframeKeys = GenerateEventTimeframeKeys(
-                eventName,
-                drilldown,
-                timestamp).ToList();
-
-            var eventsKey = GenerateKey();
-
-            var db = Settings.Db;
-            var tasks = new List<Task>();
 
             if (publishable)
             {
@@ -57,15 +52,45 @@
                 {
                     EventName = eventName,
                     Timestamp = timestamp,
+                    Timeframe = timeframe,
                     Users = users
                 }.Serialize();
             }
 
+            var timeframeKeys = GenerateEventTimeframeKeys(
+                eventName,
+                timeframe,
+                timestamp).ToList();
+
+            var db = Settings.Db;
+
             using (var connection = await ConnectionFactories.Open())
             {
+                var eventTasks = new List<Task>
+                {
+                    connection.Sets.Add(db, eventsKey, eventName),
+                    connection.Sets.Add(
+                        db,
+                        eventsKey + Settings.KeySeparator + eventName,
+                        timeframe.ToString())
+                };
+
+                if (publishable)
+                {
+                    eventTasks.Add(
+                        connection.Sets.Add(
+                            db,
+                            publishedEventsKey,
+                            eventName));
+                }
+
+                await Task.WhenAll(eventTasks);
+
+                var bitTasks = new List<Task>();
+
                 foreach (var timeframeKey in timeframeKeys)
                 {
-                    tasks.AddRange(users.Select(user =>
+                    bitTasks.AddRange(users.Select(user =>
                         connection.Strings.SetBit(
                             db,
                             timeframeKey,
@@ -73,9 +98,7 @@
                             true)));
                 }
 
-                tasks.Add(connection.Sets.Add(db, eventsKey, eventName));
-
-                await Task.WhenAll(tasks);
+                await Task.WhenAll(bitTasks);
 
                 if (publishable)
                 {
@@ -86,29 +109,29 @@
 
         public virtual UserActivityReport Report(
             string eventName,
-            ActivityDrilldown drilldown,
+            ActivityTimeframe timeframe,
             DateTime timestamp)
         {
             Validation.ValidateEventName(eventName);
 
             var eventKey = GenerateEventTimeframeKeys(
-                eventName, drilldown, timestamp).ElementAt((int)drilldown);
+                eventName, timeframe, timestamp).ElementAt((int)timeframe);
 
             return new UserActivityReport(Settings.Db, eventKey);
         }
 
         internal IEnumerable<string> GenerateEventTimeframeKeys(
             string eventName,
-            ActivityDrilldown drilldown,
+            ActivityTimeframe timeframe,
             DateTime timestamp)
         {
             yield return GenerateKey(
                 eventName,
                 timestamp.FormatYear());
 
-            var type = (int)drilldown;
+            var type = (int)timeframe;
 
-            if (type > (int)ActivityDrilldown.Year)
+            if (type > (int)ActivityTimeframe.Year)
             {
                 yield return GenerateKey(
                     eventName, 
@@ -116,7 +139,7 @@
                     timestamp.FormatMonth());
             }
 
-            if (type > (int)ActivityDrilldown.Month)
+            if (type > (int)ActivityTimeframe.Month)
             {
                 yield return GenerateKey(
                     eventName, 
@@ -125,7 +148,7 @@
                     timestamp.FormatDay());
             }
 
-            if (type > (int)ActivityDrilldown.Day)
+            if (type > (int)ActivityTimeframe.Day)
             {
                 yield return GenerateKey(
                     eventName, 
@@ -135,7 +158,7 @@
                     timestamp.FormatHour());
             }
 
-            if (type > (int)ActivityDrilldown.Hour)
+            if (type > (int)ActivityTimeframe.Hour)
             {
                 yield return GenerateKey(
                     eventName,
@@ -146,7 +169,7 @@
                     timestamp.FormatMinute());
             }
 
-            if (type > (int)ActivityDrilldown.Minute)
+            if (type > (int)ActivityTimeframe.Minute)
             {
                 yield return GenerateKey(
                     eventName,

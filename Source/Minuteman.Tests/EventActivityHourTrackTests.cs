@@ -7,20 +7,20 @@
     public class EventActivityHourTrackTests : EventActivityDayTrackTests
     {
         public EventActivityHourTrackTests() :
-            this(ActivityDrilldown.Hour)
+            this(ActivityTimeframe.Hour)
         {
         }
 
         protected EventActivityHourTrackTests(
-            ActivityDrilldown drilldown)
-            : base(drilldown)
+            ActivityTimeframe timeframe)
+            : base(timeframe)
         {
         }
 
         [Fact]
         public async Task CreatesHourField()
         {
-            await TestExists(ActivityDrilldown.Hour);
+            await TestExists(ActivityTimeframe.Hour);
         }
     }
 }

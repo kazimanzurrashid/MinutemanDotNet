@@ -3,11 +3,11 @@
     using System;
     using System.Threading.Tasks;
 
-    public interface IEventActivity : IActivity
+    public interface IEventActivity : IActivity<EventActivitySubscriptionInfo>
     {
         Task<long> Track(
             string eventName,
-            ActivityDrilldown drilldown,
+            ActivityTimeframe timeframe,
             DateTime timestamp,
             bool publishable);
 
@@ -15,10 +15,6 @@
             string eventName,
             DateTime startTimestamp,
             DateTime endTimestamp,
-            ActivityDrilldown drilldown);
-
-        ISubscription CreateSubscription(
-            string eventName,
-            Action<EventActivitySubscriptionInfo> action);
+            ActivityTimeframe timeframe);
     }
 }

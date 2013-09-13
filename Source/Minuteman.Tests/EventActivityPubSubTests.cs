@@ -8,13 +8,13 @@
 
     public class EventActivityPubSubTests: IDisposable
     {
-        private readonly EventActivity publisher;
+        private readonly EventActivity activity;
 
         public EventActivityPubSubTests()
         {
-            publisher = new EventActivity(
-                new ActivitySettings(1, ActivityDrilldown.Year));
-            publisher.Reset().Wait();
+            activity = new EventActivity(
+                new ActivitySettings(1, ActivityTimeframe.Year));
+            activity.Reset().Wait();
         }
 
         [Fact]
@@ -25,30 +25,28 @@
 
             var signal = new ManualResetEvent(false);
 
-            var subscription = publisher.CreateSubscription(
-                EventName,
-                e =>
-                    {
-                        Assert.Equal(EventName, e.EventName);
-                        Assert.Equal(timestamp, e.Timestamp);
-                        Assert.Equal(ActivityDrilldown.Year, e.Drilldown);
-                        Assert.Equal(1, e.Count);
-                        signal.Set();
-                    });
+            var subscription = activity.CreateSubscription();
 
-            await subscription.Subscribe();
+            await subscription.Subscribe(EventName, e =>
+                {
+                    Assert.Equal(EventName, e.EventName);
+                    Assert.Equal(timestamp, e.Timestamp);
+                    Assert.Equal(ActivityTimeframe.Year, e.Timeframe);
+                    Assert.Equal(1, e.Count);
+                    signal.Set();
+                });
 
-            await publisher.Track(EventName, timestamp, true);
+            await activity.Track(EventName, timestamp, true);
 
             signal.WaitOne(TimeSpan.FromSeconds(1));
 
-            await subscription.Unsubscribe();
+            await subscription.Unsubscribe(EventName);
             subscription.Dispose();
         }
 
         public void Dispose()
         {
-            publisher.Reset().Wait();
+            activity.Reset().Wait();
         }
     }
 }

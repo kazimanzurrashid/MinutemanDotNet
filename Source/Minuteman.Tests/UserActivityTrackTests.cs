@@ -11,10 +11,10 @@
         protected const string EventName = "my-event";
         protected static readonly DateTime Timestamp = DateTime.UtcNow;
 
-        protected UserActivityTrackTests(ActivityDrilldown drilldown)
+        protected UserActivityTrackTests(ActivityTimeframe timeframe)
         {
             UserActivity = new UserActivity(
-                new ActivitySettings(1, drilldown));
+                new ActivitySettings(1, timeframe));
             UserActivity.Reset().Wait();
             UserActivity.Track(EventName, Timestamp, 1, 2, 3).Wait();
         }
@@ -34,13 +34,13 @@
             UserActivity.Reset().Wait();
         }
 
-        protected async Task TestExists(ActivityDrilldown drilldown)
+        protected async Task TestExists(ActivityTimeframe timeframe)
         {
             var key = UserActivity.GenerateEventTimeframeKeys(
                 EventName,
-                drilldown,
+                timeframe,
                 Timestamp)
-                .ElementAt((int)drilldown);
+                .ElementAt((int)timeframe);
 
             using (var connection = await ConnectionFactories.Open())
             {

@@ -7,19 +7,20 @@
     public class UserActivityDayTrackTests : UserActivityMonthTrackTests
     {
         public UserActivityDayTrackTests()
-            : this(ActivityDrilldown.Day)
+            : this(ActivityTimeframe.Day)
         {
         }
 
         protected UserActivityDayTrackTests(
-            ActivityDrilldown drilldown) : base(drilldown)
+            ActivityTimeframe timeframe)
+            : base(timeframe)
         {
         }
 
         [Fact]
         public async Task CreatesDayEntry()
         {
-            await TestExists(ActivityDrilldown.Day);
+            await TestExists(ActivityTimeframe.Day);
         }
     }
 }
